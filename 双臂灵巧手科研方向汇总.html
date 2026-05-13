@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>双臂灵巧手机器人学术科研 - 知识体系</title>
+    <style>
+        :root {
+            --primary: #1a3c6e;
+            --primary-light: #2c5aa0;
+            --accent: #c9a84c;
+            --bg: #f5f2eb;
+            --white: #ffffff;
+            --text: #2c2c2c;
+            --text-light: #555;
+            --border: #e0dcd3;
+            --sidebar-bg: #fafaf7;
+            --hover-bg: #eef1f6;
+            --shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+            --radius: 8px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+            background: #eae7df;
+            color: var(--text);
+            line-height: 1.7;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ==================== 顶部导航栏 ==================== */
+        .top-bar {
+            background: var(--white);
+            border-bottom: 3px solid var(--primary);
+            box-shadow: 0 1px 8px rgba(0, 0, 0, 0.06);
+            position: sticky;
+            top: 0;
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            padding: 0 28px;
+            height: 60px;
+            gap: 16px;
+        }
+        .top-bar .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            flex-shrink: 0;
+            text-decoration: none;
+        }
+        .top-bar .logo-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        .top-bar .title-main {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+        .top-bar .title-sub {
+            font-size: 11px;
+            color: #888;
+            white-space: nowrap;
+        }
+        .top-bar .breadcrumb-nav {
+            margin-left: auto;
+            font-size: 13px;
+            color: #888;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .top-bar .breadcrumb-nav a {
+            color: var(--primary-light);
+            text-decoration: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+        .top-bar .breadcrumb-nav a:hover {
+            color: var(--accent);
+            text-decoration: underline;
+        }
+        .top-bar .breadcrumb-nav .sep {
+            color: #ccc;
+        }
+        .top-bar .breadcrumb-nav .current {
+            color: #555;
+            font-weight: 600;
+        }
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 22px;
+            cursor: pointer;
+            color: var(--primary);
+            padding: 4px 8px;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+        /* ==================== 主布局 ==================== */
+        .main-container {
+            display: flex;
+            flex: 1;
+            max-width: 1500px;
+            width: 100%;
+            margin: 0 auto;
+            min-height: calc(100vh - 60px);
+        }
+        /* 侧边栏（仅子页面显示） */
+        .sidebar {
+            width: 280px;
+            min-width: 280px;
+            background: var(--sidebar-bg);
+            border-right: 1px solid var(--border);
+            overflow-y: auto;
+            position: sticky;
+            top: 60px;
+            height: calc(100vh - 60px);
+            padding: 16px 0;
+            transition: var(--transition);
+            z-index: 50;
+            flex-shrink: 0;
+        }
+        .sidebar.hidden {
+            display: none;
+        }
+        .sidebar .sidebar-title {
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--primary);
+            padding: 8px 18px 12px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .sidebar .sidebar-title::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 15px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .sidebar li a {
+            display: block;
+            padding: 5px 18px 5px 18px;
+            text-decoration: none;
+            color: #444;
+            font-size: 12px;
+            transition: var(--transition);
+            border-left: 3px solid transparent;
+            line-height: 1.4;
+            cursor: pointer;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .sidebar li a:hover,
+        .sidebar li a.active-nav {
+            background: var(--hover-bg);
+            color: var(--primary-light);
+            border-left-color: var(--accent);
+            font-weight: 600;
+        }
+        .sidebar li a.level-h2 {
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--primary);
+            padding-left: 14px;
+        }
+        .sidebar li a.level-h3 {
+            padding-left: 30px;
+            font-weight: 500;
+            font-size: 12px;
+            color: #333;
+        }
+        .sidebar li a.level-h4 {
+            padding-left: 46px;
+            font-size: 11px;
+            color: #666;
+        }
+
+        /* 内容区 */
+        .content {
+            flex: 1;
+            padding: 28px 36px;
+            overflow-y: auto;
+            max-width: 1100px;
+            background: #fdfdfc;
+            min-height: calc(100vh - 60px);
+            transition: var(--transition);
+        }
+        .content.full-width {
+            max-width: 100%;
+            padding: 40px 48px;
+        }
+
+        /* ==================== 主页卡片样式 ==================== */
+        .home-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 70vh;
+            padding: 40px 20px;
+        }
+        .home-container .home-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+        .home-container .home-subtitle {
+            font-size: 14px;
+            color: #888;
+            text-align: center;
+            margin-bottom: 36px;
+            letter-spacing: 0.5px;
+        }
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+            width: 100%;
+            max-width: 1100px;
+        }
+        .card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 28px 22px;
+            box-shadow: var(--shadow);
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent);
+        }
+        .card .card-icon {
+            font-size: 42px;
+            margin-bottom: 14px;
+            display: block;
+        }
+        .card .card-num {
+            font-size: 12px;
+            color: var(--accent);
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+        .card .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+        .card .card-desc {
+            font-size: 13px;
+            color: #777;
+            line-height: 1.5;
+        }
+        .card::after {
+            content: '点击进入 →';
+            display: block;
+            margin-top: 14px;
+            font-size: 12px;
+            color: var(--primary-light);
+            font-weight: 600;
+            opacity: 0;
+            transition: var(--transition);
+            transform: translateY(6px);
+        }
+        .card:hover::after {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ==================== 章节内容样式 ==================== */
+        .section-block {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 22px 26px;
+            margin-bottom: 18px;
+            box-shadow: var(--shadow);
+            border: 1px solid #eee;
+            transition: var(--transition);
+        }
+        .section-block:hover {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        .section-block h2 {
+            font-size: 19px;
+            color: var(--primary);
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 9px;
+            margin-bottom: 14px;
+            letter-spacing: 0.4px;
+        }
+        .section-block h3 {
+            font-size: 16px;
+            color: #2c4a7c;
+            margin: 16px 0 9px;
+            padding-left: 10px;
+            border-left: 4px solid var(--accent);
+            letter-spacing: 0.3px;
+        }
+        .section-block h4 {
+            font-size: 14px;
+            color: #3a5a8c;
+            margin: 12px 0 7px;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+        }
+        .section-block h4::before {
+            content: '▸ ';
+            color: var(--accent);
+            font-size: 12px;
+        }
+        .section-block .core-position {
+            background: #fdf8ed;
+            border-left: 4px solid var(--accent);
+            padding: 9px 14px;
+            border-radius: 0 var(--radius) var(--radius) 0;
+            margin: 9px 0 14px;
+            font-size: 13px;
+            color: #6b5a30;
+            font-style: italic;
+        }
+        .section-block ul,
+        .section-block ol {
+            margin: 5px 0 9px 18px;
+            padding: 0;
+        }
+        .section-block li {
+            margin: 3px 0;
+            font-size: 13px;
+            color: #444;
+            line-height: 1.6;
+            padding-left: 2px;
+        }
+        .section-block p {
+            font-size: 13px;
+            color: #444;
+            line-height: 1.7;
+            margin: 4px 0;
+        }
+        .section-block b {
+            color: #2c2c2c;
+        }
+        .section-block .highlight-box {
+            background: #f7f9fc;
+            border: 1px solid #e0e5ec;
+            border-radius: var(--radius);
+            padding: 12px 16px;
+            margin: 9px 0;
+            font-size: 13px;
+        }
+        .back-to-home {
+            display: inline-block;
+            margin-bottom: 16px;
+            padding: 8px 18px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+        .back-to-home:hover {
+            background: var(--primary-light);
+            box-shadow: var(--shadow);
+        }
+
+        /* 响应式 */
+        @media (max-width: 900px) {
+            .sidebar {
+                position: fixed;
+                left: 0;
+                top: 60px;
+                z-index: 150;
+                box-shadow: 4px 0 20px rgba(0, 0, 0, 0.2);
+                transform: translateX(0);
+                width: 280px;
+                min-width: 280px;
+                transition: transform 0.3s ease;
+            }
+            .sidebar.collapsed {
+                transform: translateX(-100%);
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .content {
+                padding: 14px 10px;
+                max-width: 100%;
+            }
+            .content.full-width {
+                padding: 20px 12px;
+            }
+            .section-block {
+                padding: 14px 10px;
+            }
+            .section-block h2 {
+                font-size: 16px;
+            }
+            .section-block h3 {
+                font-size: 14px;
+            }
+            .section-block h4 {
+                font-size: 12px;
+            }
+            .card-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            .home-container .home-title {
+                font-size: 22px;
+            }
+            .top-bar .title-main {
+                font-size: 14px;
+            }
+            .top-bar .breadcrumb-nav {
+                font-size: 11px;
+            }
+        }
+        @media print {
+            .sidebar,
+            .top-bar,
+            .back-to-home {
+                display: none;
+            }
+            .content {
+                max-width: 100%;
+                padding: 0;
+            }
+            .section-block {
+                box-shadow: none;
+                border: 1px solid #ddd;
+                break-inside: avoid;
+            }
+        }
+        .sidebar::-webkit-scrollbar,
+        .content::-webkit-scrollbar {
+            width: 5px;
+        }
+        .sidebar::-webkit-scrollbar-thumb,
+        .content::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==================== 顶部导航栏 ==================== -->
+    <header class="top-bar" id="topBar">
+        <button class="menu-toggle" id="menuToggle" title="切换侧边栏">☰</button>
+        <a class="logo-area" id="logoLink" title="返回首页">
+            <div class="logo-icon">🤖</div>
+            <div>
+                <div class="title-main">双臂灵巧手机器人</div>
+                <div class="title-sub">学术科研知识体系</div>
+            </div>
+        </a>
+        <nav class="breadcrumb-nav" id="breadcrumb">
+            <span class="current">首页</span>
+        </nav>
+    </header>
+
+    <!-- ==================== 主布局 ==================== -->
+    <div class="main-container">
+        <!-- 侧边栏（子页面时显示） -->
+        <aside class="sidebar hidden" id="sidebar">
+            <div class="sidebar-title" id="sidebarTitle">目录导航</div>
+            <ul id="sidebarNav"></ul>
+        </aside>
+
+        <!-- 内容区 -->
+        <main class="content full-width" id="mainContent">
+            <!-- 主页内容 -->
+            <div id="page-home" class="home-container">
+                <div class="home-title">双臂灵巧手机器人学术科研</div>
+                <div class="home-subtitle">系统化知识体系 · 四大核心模块</div>
+                <div class="card-grid">
+                    <!-- 卡片1 -->
+                    <a class="card" data-page="page-1" onclick="navigateTo('page-1', '一、机械结构与硬件系统')">
+                        <span class="card-icon">⚙️</span>
+                        <div class="card-num">第一部分</div>
+                        <div class="card-title">机械结构与硬件系统</div>
+                        <div class="card-desc">机构设计 · 驱动致动 · 硬件集成 · 材料科学</div>
+                    </a>
+                    <!-- 卡片2 -->
+                    <a class="card" data-page="page-2" onclick="navigateTo('page-2', '二、感知系统')">
+                        <span class="card-icon">👁️</span>
+                        <div class="card-num">第二部分</div>
+                        <div class="card-title">感知系统</div>
+                        <div class="card-desc">视觉感知 · 非视觉感知 · 传感器融合 · 感知可靠性</div>
+                    </a>
+                    <!-- 卡片3 -->
+                    <a class="card" data-page="page-3" onclick="navigateTo('page-3', '三、决策与控制系统')">
+                        <span class="card-icon">🧠</span>
+                        <div class="card-num">第三部分</div>
+                        <div class="card-title">决策与控制系统</div>
+                        <div class="card-desc">运动规划 · 控制理论 · AI学习 · 认知推理</div>
+                    </a>
+                    <!-- 卡片4 -->
+                    <a class="card" data-page="page-4" onclick="navigateTo('page-4', '四、交互与协同系统')">
+                        <span class="card-icon">🤝</span>
+                        <div class="card-num">第四部分</div>
+                        <div class="card-title">交互与协同系统</div>
+                        <div class="card-desc">人机交互 · 多机器人协同 · 环境交互</div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- ==================== 子页面容器 ==================== -->
+            <div id="page-1" style="display:none;"></div>
+            <div id="page-2" style="display:none;"></div>
+            <div id="page-3" style="display:none;"></div>
+            <div id="page-4" style="display:none;"></div>
+        </main>
+    </div>
+
+    <script>
+        // ==================== 页面数据 ====================
+        // 所有子页面的HTML内容存储在这里
+        const pageContents = {};
+
+        // ---- 页面1：机械结构与硬件系统 ----
+        pageContents['page-1'] = `
+            <button class="back-to-home" onclick="navigateTo('page-home','首页')">← 返回首页</button>
+            <div class="section-block" id="sec-1-0">
+                <h2>一、机械结构与硬件系统</h2>
+            </div>
+            <div class="section-block" id="sec-1-1">
+                <h2>1 机械结构设计</h2>
+                <h3>1.1 基础机构学与构型设计理论</h3>
+                <p class="core-position">核心定位：解决「机器人该有什么样的运动形态」的底层理论问题，是所有结构设计的源头</p>
+                <h4>1.1.1 机构拓扑与自由度综合</h4>
+                <p><b>(1)核心研究内容</b></p><p>基于旋量理论、李群李代数、图论等数学工具，开展串联／并联/混联机构的型综合、数综合、自由度分析，设计满足特定运动需求（如高精度、大负载、高灵活性）的机构构型</p>
+                <p><b>(2)前沿学术热点</b></p><p>少自由度并联机构的完整构型综合理论（解决传统并联机构自由度余、运动耦合问题）混联机构的构型创新（如人形机器人的混联踝关节、加工机器人的混联主轴头）基于生成式AI的机构构型自动综合（用大模型、强化学习生成满足需求的新型机构）</p>
+                <p><b>(3)跨学科融合</b></p><p>机械 × 数学（拓扑学、优化理论）、机械 × AI（生成式设计）</p>
+                <p><b>(4)代表研究</b></p><p>清华大学「混联加工机器人」构型、MIT「人形机器人并联关节设计」，顶刊《Mechanism and Machine Theory》、顶会ICRA/IROS</p>
+                <h4>1.1.2 变胞／可重构机构理论</h4>
+                <p><b>(1)核心研究内容</b></p><p>研究可改变自由度、构型、运动特性的变胞机构，以及可重构模块化机构的拓扑演化规律、运动学／动力学建模、构型切换机理。</p>
+                <p><b>(2)前沿学术热点</b></p><p>变胞机构的拓扑综合与运动控制一体化设计 自重构模块化机器人的自动拼接与构型自适应 折纸／剪纸（Origami/Kirigami）启发的变胞机构设计</p>
+                <p><b>(3)跨学科融合</b></p><p>机械 × 材料（超材料折纸结构）、机械 × 控制（构型切换控制）</p>
+                <p><b>(4)代表研究</b></p><p>洛桑联邦理工「折纸可展开机器人」、哈尔滨工业大学「空间变胞机械臂」，顶刊《Nature Communications》</p>
+                <h4>1.1.3 余自由度机构设计与优化</h4>
+                <p><b>(1)核心研究内容</b></p><p>针对7自由度机械臂、余度人形机器人等，开展余度分配、避障、容错、轨迹优化的结构设计，解决高灵活性与控制复杂度的矛盾。</p>
+                <p><b>(2)前沿学术热点</b></p><p>冗余度机器人的全局运动学优化（兼顾灵活性、避障、能耗）冗余关节的容错结构设计（单关节故障下仍可完成任务）冗余度与柔顺控制结合的结构优化</p>
+                <p><b>(3)跨学科融合</b></p><p>机械 × 控制（余度控制）、机械 × 优化理论</p>
+                <p><b>(4)代表研究</b></p><p>NASA「7自由度空间机械臂」、波士顿动力「Atlas余关节设计」</p>
+                <h4>1.1.4 机构运动学/动力学精准建模</h4>
+                <p><b>(1)核心研究内容</b></p><p>建立机器人机构的正逆运动学、刚柔耦合多体动力学、摩擦力动力学模型，开展参数辨识、误差补偿、动态特性分析。</p>
+                <p><b>(2)前沿学术热点</b></p><p>刚柔耦合动力学的高精度建模（针对高速、柔性机器人）数字孪生驱动的机构参数实时辨识与优化不确定性环境下的机构动力学鲁棒建模</p>
+                <p><b>(3)跨学科融合</b></p><p>机械 × 力学（多体动力学）、机械 × AI（数字孪生、参数辨识）</p>
+                <p><b>(4)代表研究</b></p><p>上海交通大学「机器人刚柔耦合动力学」，顶刊《International Journal of Robotics Research》</p>
+            </div>
+            <div class="section-block" id="sec-1-2">
+                <h3>1.2 轻量化与高刚度结构优化</h3>
+                <p class="core-position">核心定位：解决「机器人结构轻、刚度高、动态性能好」的工程核心矛盾，是工业、人形、移动机器人的共性需求</p>
+                <h4>1.2.1 拓扑优化与多目标性能优化</h4>
+                <p><b>(1)核心研究内容</b></p><p>基于变密度法、水平集法、渐进结构优化法等，开展机械臂连杆、关节壳体、移动机器人车架等结构的拓扑优化，实现轻量化与高刚度的平衡。</p>
+                <p><b>(2)前沿学术热点</b></p><p>增材制造导向的拓扑优化（考虑3D打印工艺约束，设计复杂点阵／晶格结构）多目标拓扑优化（同时优化刚度、重量、振动、热性能、可靠性）生成式AI辅助拓扑优化（用大模型快速生成最优结构拓扑）</p>
+                <p><b>(3)跨学科融合</b></p><p>机械 × 材料（增材制造材料）、机械 × AI（生成式设计）</p>
+                <p><b>(4)代表研究</b></p><p>MIT「拓扑优化人形机器人骨骼」、华中科技大学「增材制造机器人结构」，顶刊《Structural and Multidisciplinary Optimization》</p>
+                <h4>1.2.2 刚柔耦合结构设计</h4>
+                <p><b>(1)核心研究内容</b></p><p>设计刚柔混合结构，融合刚性结构的高精度与柔性结构的高适应性，解决高速、重载机器人的振动、冲击问题。</p>
+                <p><b>(2)前沿学术热点</b></p><p>柔性连杆／关节的结构设计与柔顺控制一体化刚柔耦合结构的动力学精准建模与振动抑制柔性机构的力感知结构设计（用于协作机器人）</p>
+                <p><b>(3)跨学科融合</b></p><p>机械 × 控制（柔顺控制）、机械 × 力学（弹性力学）</p>
+                <p><b>(4)代表研究</b></p><p>Universal Robots「协作机器人柔性关节」，顶会ICRA</p>
+                <h4>1.2.3 振动抑制与动态特性优化</h4>
+                <p><b>(1)核心研究内容</b></p><p>优化结构的固有频率、阻尼比，避免共振，提升机器人的定位精度与运动平稳性。</p>
+                <p><b>(2)前沿学术热点</b></p><p>超材料阻尼结构设计（用超材料实现宽频振动抑制）主动振动抑制的结构集成（内置压电作动器、传感器的结构）高速机器人的结构动态特性全局优化</p>
+                <p><b>(3)跨学科融合</b></p><p>机械 × 材料（超材料）、机械 × 控制（主动控制）</p>
+                <p><b>(4)代表研究</b></p><p>洛桑联邦理工「超材料振动抑制机器人结构」，顶刊《Science Robotics》</p>
+                <h4>1.2.4 热-结构耦合优化</h4>
+                <p><b>(1)核心研究内容</b></p><p>针对高负载、高速机器人的关节发热问题，开展热结构耦合分析，设计散热结构、隔热结构，抑制热变形对精度的影响。</p>
+                <p><b>(2)前沿学术热点</b></p><p>相变材料集成的关节散热结构设计热误差补偿与结构设计一体化优化极端环境下的热结构耦合设计（如航天、工业机器人）</p>
+                <p><b>(3)跨学科融合</b></p><p>机械 × 热力学、机械 × 材料（相变材料）</p>
+                <p><b>(4)代表研究</b></p><p>发那科「工业机器人热结构优化」，顶刊《Robotics and Computer-Integrated Manufacturing》</p>
+            </div>
+            <div class="section-block" id="sec-1-3">
+                <h3>1.3 仿生与生物启发式结构设计（前沿交叉热点，具身智能核心载体）</h3>
+                <p class="core-position">核心定位：模仿生物的结构、运动、感知机理，突破传统刚性机器人的性能边界，是具身智能机器人的核心结构支撑</p>
+                <h4>1.3.1 生物形态仿生结构设计</h4>
+                <p><b>(1)核心研究内容</b></p><p>模仿人、动物、昆虫等生物的躯体结构，设计仿人机器人骨骼、四足／六足机器人腿部、仿生柔性臂等结构。</p>
+                <p><b>(2)前沿学术热点</b></p><p>仿人肌肉－骨骼耦合结构设计（人形机器人的脊柱、髋关节、肌肉驱动骨骼）仿生连续体／软体机器人结构（仿章鱼臂、仿生蠕虫结构）仿生扑翼／游动机器人结构（仿鸟类、鱼类的高效运动结构）</p>
+                <p><b>(3)跨学科融合</b></p><p>机械 × 生物医学（人体解剖学、生物力学）、机械 × 材料（柔性材料）</p>
+                <p><b>(4)代表研究</b></p><p>波士顿动力「Atlas仿人骨骼结构」斯坦福大学「仿章鱼柔性臂」，顶刊《Nature》</p>
+                <h4>1.3.2 柔性／软体机器人结构设计</h4>
+                <p><b>(1)核心研究内容</b></p><p>设计基于柔性材料、绳驱、气动、磁控的软体机器人结构，实现非结构化环境的高适应性交互。</p>
+                <p><b>(2)前沿学术热点</b></p><p>多材料3D打印的软体机器人结构（功能梯度材料、柔性－刚性混合结构）磁控／光控柔性机器人的结构设计（微纳尺度、医疗场景）柔性机器人的力感知结构集成（仿生皮肤、触觉传感器）</p>
+                <p><b>(3)跨学科融合</b></p><p>机械 × 材料（柔性电子、水凝胶）、机械 × 生物医学（医疗机器人）</p>
+                <p><b>(4)代表研究</b></p><p>哈佛大学「软体机器人」，顶刊《Science Robotics》</p>
+                <h4>1.3.3 感知－结构一体化仿生设计</h4>
+                <p><b>(1)核心研究内容</b></p><p>将传感器、作动器直接集成到机器人结构中，实现「结构即感知、结构即驱动」，突破传统「结构+传感器」的分离式架构。</p>
+                <p><b>(2)前沿学术热点</b></p><p>柔性电子皮肤的结构集成（服务机器人、医疗机器人）自感知复合材料结构（内置光纤、压电传感器的结构）超材料感知结构（用超材料实现环境感知、力感知）</p>
+                <p><b>(3)跨学科融合</b></p><p>机械 × 电子（柔性电子）、机械 × 材料（智能复合材料）</p>
+                <p><b>(4)代表研究</b></p><p>斯坦福大学「电子皮肤机器人」，顶刊《Nature Electronics》</p>
+                <h4>1.3.4 生物运动机理仿生结构</h4>
+                <p><b>(1)核心研究内容</b></p><p>模仿生物的运动原理（如肌肉驱动、蠕动、飞行、游动），设计高效、高适应性的机器人结构。</p>
+                <p><b>(2)前沿学术热点</b></p><p>仿生肌肉驱动结构（气动人工肌肉、形状记忆合金肌肉）仿生蠕动机器人的柔性结构设计（医疗、管道机器人）扑翼机器人的高效气动结构设计（微型飞行器）</p>
+                <p><b>(3)跨学科融合</b></p><p>机械 × 生物力学、机械 × 流体力学</p>
+                <p><b>(4)代表研究</b></p><p>MIT「仿生扑翼机器人」，顶刊《Science》</p>
+            </div>
+            <div class="section-block" id="sec-1-4">
+                <h3>1.4 可重构／模块化／可展开结构设计（特种场景核心方向）</h3>
+                <p class="core-position">核心定位：解决「机器人适应多任务、多场景、极端环境」的结构需求，用于空间探索、灾难救援、可穿戴等场景</p>
+                <h4>1.4.1 模块化机器人结构设计</h4>
+                <p><b>(1)核心研究内容</b></p><p>设计标准化、可互换的机器人模块，快速拼接成不同构型的机器人，适应不同任务需求。</p>
+                <p><b>(2)前沿学术热点</b></p><p>自重构模块化机器人（自动拼接、自主变形，用于灾难救援）模块化人形机器人的结构设计（快速更换关节、末端执行器）模块化工业机器人的柔性生产线适配</p>
+                <p><b>(3)跨学科融合</b></p><p>机械 × 控制（自重构控制）、机械 × AI（构型自动规划）</p>
+                <p><b>(4)代表研究</b></p><p>CMU「自重构模块化机器人」、哈尔滨工业大学「空间模块化机械臂」</p>
+                <h4>1.4.2 可展开/折叠结构设计</h4>
+                <p><b>(1)核心研究内容</b></p><p>设计可折叠、可展开的机器人结构，解决运输空间受限、部署需求，用于空间机器人、可穿戴机器人、救援机器人。</p>
+                <p><b>(2)前沿学术热点</b></p><p>折纸／剪纸启发的可展开结构空间机器人的大型可展开机械臂、天线结构可穿戴外骨骼的折叠式结构设计</p>
+                <p><b>(3)跨学科融合</b></p><p>机械 × 材料（超材料）、机械 × 航空航天（空间技术）</p>
+                <p><b>(4)代表研究</b></p><p>NASA「空间可展开机械臂」，顶刊《Nature Communications》</p>
+                <h4>1.4.3 变构型/多模态机器人结构设计</h4>
+                <p><b>(1)核心研究内容</b></p><p>设计可切换构型的机器人结构，实现多模态运动（如轮－腿复合、水－陆两栖、飞－行复合），适应非结构化环境。</p>
+                <p><b>(2)前沿学术热点</b></p><p>轮腿复合机器人的变构型关节设计（可切换轮式／腿式运动）水陆两栖机器人的可变形结构设计飞行-行走复合机器人的结构设计</p>
+                <p><b>(3)跨学科融合</b></p><p>机械 × 流体力学、机械 × 控制（模态切换控制）</p>
+                <p><b>(4)代表研究</b></p><p>波士顿动力「Handle轮腿机器人」、MIT「水陆两栖机器人」</p>
+                <h4>1.4.4 可穿戴机器人（外骨骼）结构设计</h4>
+                <p><b>(1)核心研究内容</b></p><p>设计贴合人体关节、轻量化、高适配性的外骨骼结构，用于康复、助力、工业防护。</p>
+                <p><b>(2)前沿学术热点</b></p><p>柔性外骨骼的结构设计（无刚性连杆，贴合人体运动）人机耦合的结构优化（适配不同体型、运动姿态）康复外骨骼的力感知结构集成</p>
+                <p><b>(3)跨学科融合</b></p><p>机械 × 生物医学（人体工学、康复医学）、机械 × 控制（人机协同控制）</p>
+                <p><b>(4)代表研究</b></p><p>本田「步行辅助外骨骼」，顶刊《IEEE Transactions on Neural Systems and Rehabilitation Engineering》</p>
+            </div>
+            <div class="section-block" id="sec-1-5">
+                <h3>1.5 先进制造与智能集成结构设计</h3>
+                <p class="core-position">核心定位：结合先进制造技术、人工智能、新材料，实现结构设计的智能化、一体化、定制化</p>
+                <h4>1.5.1 增材制造（3D打印）导向的结构设计</h4>
+                <p><b>(1)核心研究内容</b></p><p>针对金属3D打印、多材料3D打印、连续纤维增强3D打印等工艺，设计复杂拓扑、点阵／晶格、功能梯度的机器人结构。</p>
+                <p><b>(2)前沿学术热点</b></p><p>多材料3D打印的柔性－刚性混合机器人结构连续纤维增强复合材料的机器人结构设计（轻量化、高刚度）4D打印的智能变形结构设计（响应环境刺激的结构）</p>
+                <p><b>(3)跨学科融合</b></p><p>机械 × 材料（增材制造材料）、机械 × 制造工程</p>
+                <p><b>(4)代表研究</b></p><p>哈佛大学「4D打印软体机器人」，顶刊《Science Advances》</p>
+                <h4>1.5.2 功能结构一体化设计</h4>
+                <p><b>(1)核心研究内容</b></p><p>将驱动、传感、控制、能源等功能直接集成到机器人结构中，实现「结构即系统」，突破传统模块化集成的瓶颈。</p>
+                <p><b>(2)前沿学术热点</b></p><p>超材料功能一体化结构（同时实现结构支撑、驱动、感知）自供电机器人结构（集成能量收集材料的结构）自修复结构（集成自修复材料的机器人结构）</p>
+                <p><b>(3)跨学科融合</b></p><p>机械 × 材料（智能材料、超材料）、机械 × 能源（能量收集）</p>
+                <p><b>(4)代表研究</b></p><p>洛桑联邦理工「超材料机器人」，顶刊《Science Robotics》</p>
+                <h4>1.5.3 微纳机器人结构设计</h4>
+                <p><b>(1)核心研究内容</b></p><p>针对微纳尺度（微米／纳米级）的机器人，设计MEMS/NEMS结构、磁控／光控结构，用于医疗、生物操作、芯片制造。</p>
+                <p><b>(2)前沿学术热点</b></p><p>磁控微纳机器人的结构设计（细胞操作、药物递送）微纳操作机器人的精密结构设计（芯片制造、生物实验）群智能微纳机器人的结构设计</p>
+                <p><b>(3)跨学科融合</b></p><p>机械 × MEMS/NEMS、机械 × 生物医学</p>
+                <p><b>(4)代表研究</b></p><p>康奈尔大学「微纳机器人」，顶刊《Nature Nanotechnology》</p>
+                <h4>1.5.4 数字孪生驱动的全生命周期结构设计</h4>
+                <p><b>(1)核心研究内容</b></p><p>基于数字孪生技术，在虚拟环境中完成结构设计、仿真、优化、验证，再进行物理制造，实现结构全生命周期的闭环优化。</p>
+                <p><b>(2)前沿学术热点</b></p><p>数字孪生驱动的结构设计－制造－运维一体化基于数字孪生的结构健康监测与寿命预测AI辅助的数字孪生结构优化</p>
+                <p><b>(3)跨学科融合</b></p><p>机械 × AI（数字孪生、大模型）、机械 × 可靠性工程</p>
+                <p><b>(4)代表研究</b></p><p>西门子「数字孪生机器人」，顶刊《IEEE Transactions on Industrial Informatics》</p>
+            </div>
+            <div class="section-block" id="sec-1-6">
+                <h3>1.6 机器人本体装配工艺与集成技术</h3>
+                <p class="core-position">核心定位：解决「机器人从零件到整机的高精度、高效率集成」问题，是保证机器人性能一致性与可靠性的核心工程环节</p>
+                <h4>1.6.1 精密机械装配工艺与公差分配优化</h4>
+                <p><b>(1)核心研究内容</b></p><p>针对机器人高精度关节、传动系统、整机装配，开展装配工艺规划、公差分析与分配优化，实现装配精度与制造成本的平衡。</p>
+                <p><b>(2)前沿学术热点</b></p><p>多工位协同装配的公差累积优化（解决复杂机器人装配误差叠加问题）基于数字孪生的公差分配动态优化（实时适配装配工况）超精密机器人装配的亚微米级公差控制</p>
+                <p><b>(3)跨学科融合</b></p><p>机械 × 统计学（公差分析）、机械 × 优化理论、机械 × 数字孪生</p>
+                <p><b>(4)代表研究</b></p><p>蔡司「工业机器人精密装配公差分析系统」、ABB「高精度关节装配工艺」，顶刊《Precision Engineering》</p>
+                <h4>1.6.2 模块化机器人快速装配与无损拆卸技术</h4>
+                <p><b>(1)核心研究内容</b></p><p>针对模块化机器人的快速部署与维护需求，设计快换接口、无损装配工艺，实现模块的快速拼接与拆卸，同时保证重复装配精度。</p>
+                <p><b>(2)前沿学术热点</b></p><p>自锁紧快换接口设计（无需额外紧固件的模块化装配）机器人自主装配/拆卸技术（无人化模块更换）重复装配的精度保持技术（解决多次拆装的精度衰减）</p>
+                <p><b>(3)跨学科融合</b></p><p>机械 × 控制（自主装配）、机械 × 材料（耐磨快换材料）</p>
+                <p><b>(4)代表研究</b></p><p>波士顿动力「Atlas模块化关节快换技术」、CMU「模块化机器人自主装配系统」</p>
+                <h4>1.6.3 刚柔混合结构装配工艺与精度保证方法</h4>
+                <p><b>(1)核心研究内容</b></p><p>针对刚柔混合结构的装配难点，开展柔性部件的定位、夹持、装配工艺设计，解决柔性变形导致的装配精度失控问题。</p>
+                <p><b>(2)前沿学术热点</b></p><p>柔性部件的力控装配工艺（避免装配过程的柔性变形）刚柔结合面的密封与精度补偿技术（如软体关节与刚性骨架装配）仿生机器人刚柔结构的仿生装配工艺（模拟生物生长的装配逻辑）</p>
+                <p><b>(3)跨学科融合</b></p><p>机械 × 控制（力控装配）、机械 × 材料（刚柔界面材料）、机械 × 仿生学</p>
+                <p><b>(4)代表研究</b></p><p>哈佛大学「软体机器人刚柔结合装配工艺」、丰田「仿人机器人柔性关节装配技术」</p>
+                <h4>1.6.4 驱动-传动-传感一体化单元集成装配技术</h4>
+                <p><b>(1)核心研究内容</b></p><p>针对机器人关节等核心单元，开展驱动、传动、传感元件的一体化集成装配，解决多元件集成的干涉、精度、可靠性问题。</p>
+                <p><b>(2)前沿学术热点</b></p><p>无间隙集成装配工艺（消除驱动-传动-传感间的安装间隙）集成单元的热匹配装配（解决工作过程的热变形干涉）微型化集成单元的微装配技术（如微纳机器人关节）</p>
+                <p><b>(3)跨学科融合</b></p><p>机械 × 电子（传感集成）、机械 × 热力学（热匹配）、机械 × 微纳制造</p>
+                <p><b>(4)代表研究</b></p><p>特斯拉「人形机器人一体化关节装配工艺」、发那科「工业机器人集成关节装配技术」，顶刊《Robotics and Computer-Integrated Manufacturing》</p>
+                <h4>1.6.5 装配过程误差建模、传递与在线补偿</h4>
+                <p><b>(1)核心研究内容</b></p><p>建立机器人装配过程的误差模型，分析误差传递路径，设计在线检测与补偿方法，实时修正装配误差，提升最终装配精度。</p>
+                <p><b>(2)前沿学术热点</b></p><p>多源误差耦合传递模型（考虑几何、热、力等多因素误差）基于机器视觉的装配误差在线检测与补偿（实时修正装配姿态）AI驱动的误差预测与主动补偿（提前预判误差并调整装配参数）</p>
+                <p><b>(3)跨学科融合</b></p><p>机械 × 机器视觉、机械 × AI（误差预测）、机械 × 控制（主动补偿）</p>
+                <p><b>(4)代表研究</b></p><p>清华大学「机器人装配误差传递建模与补偿」、三菱重工「工业机器人在线装配误差补偿系统」，顶会ICRA</p>
+            </div>
+            <div class="section-block" id="sec-2-0-p1">
+                <h2>2 驱动与致动技术</h2>
+                <h3>2.1 传统机电驱动与精密传动</h3><p class="core-position">机器人主流动力核心</p>
+                <h4>2.1.1 高性能伺服电机驱动理论与设计</h4><p><b>(1)核心研究</b>永磁同步电机、无框力矩电机、空心杯电机的电磁设计、损耗建模、高精度转矩控制；低速大扭矩、高功率密度电机本体优化</p><p><b>(2)学术热点</b>面向人形机器人的高扭矩密度、轻量化关节电机低齿槽转矩、高线性度伺服驱动设计多物理场（电磁－热－结构）耦合优化设计</p><p><b>(3)跨学科融合</b>机械工程 × 电气工程 × 电磁学 × 热学</p>
+                <h4>2.1.2 精密传动机构与新型减速器</h4><p><b>(1)核心研究</b>谐波减速器、RV减速器、行星传动的齿形优化、摩擦磨损、背隙补偿、刚度建模；微型/超薄型传动机构设计</p><p><b>(2)学术热点</b>零背隙、高刚性精密传动理论仿生柔性减速器、变刚度传动增材制造一体化传动结构</p><p><b>(3)跨学科融合</b>机构学 × 摩擦学 × 材料科学</p>
+                <h4>2.1.3 直驱与分布式驱动技术</h4><p><b>(1)核心研究</b>无减速器直驱、模块式分布式关节驱动；多关节协同驱动的运动耦合与解耦</p><p><b>(2)学术热点</b>直驱关节的扰动观测与高精度控制全分布式驱动机器人动力学建模</p><p><b>(3)跨学科融合</b>控制理论 × 机电一体化 × 机器人动力学</p>
+                <h3>2.2 流体驱动与气动/液压致动</h3><p class="core-position">重载、柔顺、大出力场景</p>
+                <h4>2.2.1 气动驱动与柔性气动致动</h4><p><b>(1)核心研究</b>气动伺服控制、气动比例方向阀、气动人工肌肉（McKibben型）建模与控制；软体气动驱动器结构与压力响应特性</p><p><b>(2)学术热点</b>微型气动驱动与集成阀岛软体机器人多腔气动协同致动气动柔顺控制与人机交互安全</p><p><b>(3)跨学科融合</b>流体力学 × 控制工程 × 软体机械</p>
+                <h4>2.2.2 液压驱动与伺服液压系统</h4><p><b>(1)核心研究</b>伺服液压控制、负载敏感控制、微型液压系统、抗污染液压驱动；重载机器人液压动力单元优化</p><p><b>(2)学术热点</b>轻量化集成式液压关节电液混合驱动与节能控制深海／极端环境耐压液压致动</p><p><b>(3)跨学科融合</b>流体传动 × 控制理论 × 海洋工程／特种工程</p>
+                <h4>2.2.3 气液混合驱动与复合致动</h4><p><b>(1)核心研究</b>气液转换驱动、高速-大推力复合动力；兼顾气动柔顺与液压刚性的混合致动</p><p><b>(2)学术热点</b>新型复合动力单元、多模式切换驱动</p>
+                <h3>2.3 智能材料致动技术</h3><p class="core-position">柔性／软体机器人核心动力，当前最热科研方向</p>
+                <h4>2.3.1 介电弹性体致动（DEA）</h4><p><b>(1)核心研究</b>DEA电场-力学耦合建模、大变形非线性动力学、失效机理；轻质高速柔性驱动器</p><p><b>(2)学术热点</b>自修复DEA致动 全软体DEA机器人驱动 低电压柔性DEA驱动</p><p><b>(3)跨学科融合</b>材料科学 × 电介质物理 × 柔性电子</p>
+                <h4>2.3.2 形状记忆合金／聚合物（SMA/SMP）致动</h4><p><b>(1)核心研究</b>热-力耦合相变模型、响应速度提升、疲劳寿命优化；微型、连续体驱动</p><p><b>(2)学术热点</b>仿生SMA肌肉阵列 4D打印SMP可编程致动 低温响应型形状记忆致动</p><p><b>(3)跨学科融合</b>材料物理 × 化学材料 × 仿生机械</p>
+                <h4>2.3.3 压电致动与精密微位移驱动</h4><p><b>(1)核心研究</b>压电陶瓷、压电薄膜、压电纤维的静动态建模；纳米级精密定位、超声电机</p><p><b>(2)学术热点</b>压电惯性驱动、尺蠖驱动 高频响微操作机器人致动 压电-柔性结构耦合驱动</p><p><b>(3)跨学科融合</b>固体力学 × 精密工程 × MEMS</p>
+                <h4>2.3.4 离子型电活性聚合物致动（IPMC）</h4><p><b>(1)核心研究</b>离子传输动力学、水合效应、低电压驱动；水下、生物兼容驱动</p>
+                <h4>2.3.5 磁致伸缩/磁流变/磁驱动致动</h4><p><b>(1)核心研究</b>超磁致伸缩材料（GMM）、磁流变液阻尼驱动；磁场控制无缆致动</p><p><b>(2)学术热点</b>磁控软体微型机器人 可变刚度磁流变关节</p><p>跨学科融合：电磁学 × 软物质物理</p>
+                <h4>2.3.6 水凝胶与刺激响应型致动</h4><p><b>(1)核心研究</b>pH/温度/光响应水凝胶驱动；溶胀-收缩动力学、生物兼容驱动</p><p><b>(2)学术热点</b>可降解医疗微型机器人驱动</p>
+                <h3>2.4 仿生肌肉与生物启发致动</h3><p class="core-position">具身智能、人形机器人核心方向</p>
+                <h4>2.4.1 绳驱/腱驱仿生肌肉系统</h4><p><b>(1)核心研究</b>仿生骨骼肌的腱驱布局、力分配策略、可变刚度设计；多绳协同驱动建模</p><p><b>(2)学术热点</b>仿人体肌肉群的分布式绳驱 绳驱冗余驱动优化与抗松弛</p><p><b>(3)跨学科融合</b>生物力学 × 机器人控制 × 仿生学</p>
+                <h4>2.4.2 可变刚度致动（VSA）与柔性关节</h4><p><b>(1)核心研究</b>串联弹性驱动（SEA）、并联弹性驱动（PEA）、可变刚度关节理论；安全人机交互</p><p><b>(2)学术热点</b>自适应刚度调节 能量回收型弹性致动 碰撞安全与柔顺交互</p><p><b>(3)跨学科融合</b>控制理论 × 人机交互（HRI）</p>
+                <h4>2.4.3 仿生多自由度肌肉阵列致动</h4><p><b>(1)核心研究</b>多束肌肉协同驱动、拮抗驱动机制；仿生物运动的动力分配</p><p><b>(2)学术热点</b>类人躯干、颈部肌肉驱动系统</p>
+                <h3>2.5 微纳尺度致动技术</h3><p class="core-position">微纳机器人、精密操作</p>
+                <h4>2.5.1 MEMS微致动</h4><p><b>(1)核心研究</b>静电驱动、电磁驱动、热驱动微结构；芯片级微操作机器人</p><p><b>(2)学术热点</b>MEMS微夹钳、细胞操作微致动</p>
+                <h4>2.5.2 光控/磁控/声控无缆微纳致动</h4><p><b>(1)核心研究</b>外场驱动微纳机器人动力学、集群运动控制</p><p><b>(2)学术热点</b>磁控螺旋微机器人 光驱动微型软体机器人</p><p><b>(3)跨学科融合</b>微纳机电 × 生物医学 × 物理学</p>
+                <h4>2.5.3 微流体致动</h4><p>核心研究：芯片内微流体驱动、气泡驱动、毛细管力驱动</p>
+                <h3>2.6 新型能量驱动与自供能致动</h3><p class="core-position">绿色机器人、长时自主</p>
+                <h4>2.6.1 能量收集型致动</h4><p><b>(1)核心研究</b>压电/摩擦/热电能量收集与驱动一体化；自供能无线驱动</p><p><b>(2)学术热点</b>环境能量回收驱动软体机器人</p>
+                <h4>2.6.2 无线传能驱动技术</h4><p><b>(1)核心研究</b>磁感应无线传能、微波传能；无缆机器人持续驱动</p><p><b>(2)学术热点</b>体内医疗机器人无线供能驱动</p>
+                <h4>2.6.3 化学能/生物能致动</h4><p><b>(1)核心研究</b>燃料电池驱动、催化反应驱动、生物燃料驱动</p><p><b>(2)学术热点</b>长航时微型机器人化学动力</p>
+                <h3>2.7 驱动系统集成、协同与能效优化</h3>
+                <h4>2.7.1 多源驱动协同控制</h4><p><b>(1)核心研究</b>电-气-磁-智能材料混合驱动协调；多执行器动态分配</p><p><b>(2)学术热点</b>具身智能混合驱动系统</p>
+                <h4>2.7.2 驱动-结构-控制一体化设计</h4><p><b>(1)核心研究</b>从结构刚度、质量分布出发优化驱动参数；动力学逆优化</p><p><b>(2)学术热点</b>AI辅助驱动-结构联合优化</p>
+                <h4>2.7.3 驱动系统能效与热管理</h4><p><b>(1)核心研究</b>关节损耗建模、动态能耗最小化、再生制动；高密度驱动散热</p><p><b>(2)学术热点</b>人形机器人全身能效优化</p>
+                <h4>2.7.4 驱动故障诊断与容错控制</h4><p><b>(1)核心研究</b>执行器故障检测、观测器设计、容错轨迹重构</p><p><b>(2)学术热点</b>空间/特种机器人冗余驱动容错</p>
+            </div>
+            <div class="section-block" id="sec-3-0-p1">
+                <h2>3 硬件集成与可靠性</h2>
+                <h3>3.1 机器人硬件系统集成设计</h3>
+                <h4>3.1.1 模块化硬件架构与标准化接口设计</h4><p><b>(1)核心研究</b>硬件功能模块划分（感知／驱动／计算／通信）、电气与机械接口标准化、即插即用硬件架构；分布式硬件拓扑设计</p><p><b>(2)学术热点</b>人形机器人全身硬件模块化与快速重构机器人硬件接口通用协议与兼容设计面向多场景的可组合硬件平台</p><p><b>(3)跨学科融合</b>机械工程 × 电子工程 × 嵌入式系统</p>
+                <h4>3.1.2 异构硬件协同与一体化集成</h4><p><b>(1)核心研究</b>多类型传感器、执行器、计算单元、通信模块的协同布局；硬件资源调度与总线优化</p><p><b>(2)学术热点</b>传感－驱动－计算共址集成硬件设计软硬一体化的低延迟硬件系统微型机器人片上系统（SoC）集成</p><p><b>(3)跨学科融合</b>电子信息 × 嵌入式系统 × 机器人系统工程</p>
+                <h4>3.1.3 边缘计算硬件与算力集成</h4><p><b>(1)核心研究</b>端侧AI芯片、FPGA、ASIC在机器人硬件中的部署；算力分配与硬件加速架构</p><p><b>(2)学术热点</b>具身智能端侧大模型推理硬件集成低功耗高能效比机器人计算硬件多芯片异构算力互联</p><p><b>(3)跨学科融合</b>计算机体系结构 × 人工智能 × 嵌入式系统</p>
+                <h4>3.1.4 高密度与小型化硬件集成</h4><p><b>(1)核心研究</b>微型化关节硬件、片上集成系统、高密度布线与结构复用；空间约束下的硬件布局优化</p><p><b>(2)学术热点</b>微纳机器人硬件系统集成可穿戴／医疗机器人超薄硬件设计人形机器人紧凑关节集成</p><p><b>(3)跨学科融合</b>MEMS × 精密机械 × 电子封装</p>
+                <h4>3.1.5 供配电与能量系统硬件集成</h4><p><b>(1)核心研究</b>电池管理系统（BMS）、电源拓扑、多路供电分配、能量回收硬件；高低压隔离与安全供电</p><p><b>(2)学术热点</b>高倍率放电硬件与热失控防护无线充电与能量收集硬件集成长续航机器人分布式供电架构</p><p><b>(3)跨学科融合</b>电气工程 × 能源工程 × 材料科学</p>
+                <h4>3.1.6 多物理场硬件集成设计</h4><p><b>(1)核心研究</b>热-电-磁-结构耦合下的硬件布局；电磁干扰抑制、散热通道与结构一体化设计</p><p><b>(2)学术热点</b>高密度关节多物理场协同优化 硬件集成中的热管理与减振一体化</p><p><b>(3)跨学科融合</b>传热学 × 电磁学 × 结构力学</p>
+                <h3>3.2 硬件可靠性设计理论与方法</h3>
+                <h4>3.2.1 可靠性建模与统计分析</h4><p><b>(1)核心研究</b>威布尔分布、失效率模型、蒙特卡洛仿真；硬件寿命建模、应力-强度干涉模型</p><p><b>(2)学术热点</b>数据驱动的机器人硬件可靠性建模 多物理场耦合下的可靠性量化分析 全生命周期可靠性演化模型</p><p><b>(3)跨学科融合</b>可靠性数学 × 统计学 × 机器学习</p>
+                <h4>3.2.2 鲁棒硬件与冗余可靠性设计</h4><p><b>(1)核心研究</b>硬件冗余拓扑（传感器冗余、驱动冗余、计算冗余）、容错硬件架构；最坏情况设计</p><p><b>(2)学术热点</b>人形机器人关键部件冗余设计 低成本高鲁棒性硬件方案 功能冗余与硬件重构机制</p><p><b>(3)跨学科融合</b>控制理论 × 系统工程 × 安全工程</p>
+                <h4>3.2.3 电磁兼容（EMC）与抗干扰设计</h4><p><b>(1)核心研究</b>电磁干扰抑制、屏蔽设计、接地与布线优化；硬件在复杂电磁环境下的稳定性</p><p><b>(2)学术热点</b>多电机驱动系统电磁兼容设计 高频通信与传感硬件抗干扰</p><p><b>(3)跨学科融合</b>电磁学 × 电子工程 × 通信工程</p>
+                <h4>3.2.4 硬件误差、漂移与补偿设计</h4><p><b>(1)核心研究</b>传感器温漂、时漂、非线性误差；驱动硬件死区、间隙与精度退化；硬件级误差补偿</p><p><b>(2)学术热点</b>自适应硬件误差自校准 极端环境下硬件参数漂移抑制</p><p><b>(3)跨学科融合</b>精密测量 × 自动控制 × 信号处理</p>
+                <h4>3.2.5 材料与工艺可靠性设计</h4><p><b>(1)核心研究</b>元器件选型、焊点可靠性、封装工艺、防腐耐磨设计；结构件疲劳与老化机理</p><p><b>(2)学术热点</b>长寿命机器人硬件材料筛选 增材制造硬件可靠性验证</p><p><b>(3)跨学科融合</b>材料科学 × 机械制造 × 腐蚀工程</p>
+                <h3>3.3 硬件故障诊断、健康监测与自愈</h3>
+                <h4>3.3.1 硬件在线故障诊断</h4><p><b>(1)核心研究</b>元器件级故障检测（开路／短路／漂移）、观测器设计、阈值判断与模式识别</p><p><b>(2)学术热点</b>基于AI的硬件故障快速诊断 端侧实时故障检测算法硬件化</p><p><b>(3)跨学科融合</b>信号处理 × 机器学习 × 控制理论</p>
+                <h4>3.3.2 硬件健康监测（PHM）</h4><p><b>(1)核心研究</b>剩余使用寿命（RUL）预测、状态评估、退化轨迹跟踪；多源数据融合监测</p><p><b>(2)学术热点</b>数字孪生驱动的硬件健康监测 关键关节与电机健康管理</p><p><b>(3)跨学科融合</b>工业大数据 × 可靠性工程 × 数字孪生</p>
+                <h4>3.3.3 硬件容错与动态重构</h4><p><b>(1)核心研究</b>故障后硬件通路切换、冗余部件启用、控制律重构；不中断任务的硬件容错机制</p><p><b>(2)学术热点</b>空间／特种机器人硬件容错系统分布式硬件自主重构</p><p><b>(3)跨学科融合</b>控制理论 × 嵌入式系统 × 智能决策</p>
+                <h4>3.3.4 自修复硬件与智能集成</h4><p><b>(1)核心研究</b>自修复导电材料、可重构电路、自适应连接；硬件损伤后的自主恢复</p><p><b>(2)学术热点</b>自修复柔性传感／驱动硬件极端环境自修复机器人本体</p><p><b>(3)跨学科融合</b>智能材料 × 电子工程 × 仿生工程</p>
+                <h3>3.4 极端环境硬件可靠性与适配设计</h3>
+                <h4>3.4.1 空间／高低温／辐照硬件可靠性</h4><p><b>(1)核心研究</b>真空适应性、高低温循环、宇宙辐照防护；硬件抗老化与抗脆断设计</p><p><b>(2)学术热点</b>星载/深空机器人硬件可靠性 极端温度硬件补偿机制</p><p><b>(3)跨学科融合</b>航天工程 × 核物理 × 材料科学</p>
+                <h4>3.4.2 深海耐压与密封硬件设计</h4><p><b>(1)核心研究</b>万米级耐压结构、水密连接器、压力补偿系统；腐蚀防护与绝缘可靠性</p><p><b>(2)学术热点</b>深海作业机器人硬件密封设计 海洋环境长时可靠性</p><p><b>(3)跨学科融合</b>海洋工程 × 力学 × 材料工程</p>
+                <h4>3.4.3 防尘、防水、防爆硬件设计</h4><p><b>(1)核心研究</b>IP等级防护、本安型电路、隔爆设计；煤矿、化工、消防场景硬件安全</p><p><b>(2)学术热点</b>防爆机器人硬件系统认证设计 复杂粉尘/潮湿环境硬件防护</p><p><b>(3)跨学科融合</b>安全工程 × 电气工程 × 化工工程</p>
+                <h4>3.4.4 强振动与冲击环境硬件可靠性</h4><p><b>(1)核心研究</b>抗振结构、缓冲设计、硬件抗冲击加固；车载、飞行、抛投场景可靠性</p><p><b>(2)学术热点</b>高机动机器人硬件抗振优化 冲击下硬件失效机理与防护</p><p><b>(3)跨学科融合</b>振动工程 × 结构力学 × 机械设计</p>
+            </div>
+            <div class="section-block" id="sec-4-0-p1">
+                <h2>4 材料科学应用</h2>
+                <h3>4.1 结构承载与轻量化高性能结构材料</h3>
+                <h4>4.1.1 高比强度结构合金与金属基材料</h4><p><b>(1)核心研究</b>铝锂合金、钛合金、高强钢在机器人连杆／机架／关节壳体的应用；轻量化与结构强度匹配、成型工艺优化</p><p><b>(2)学术热点</b>人形／四足机器人轻量化高刚度金属材料选型纳米增强金属基复合材料强韧化机理薄壁复杂结构金属材料疲劳性能优化</p><p><b>(3)跨学科融合</b>机械结构设计 × 材料力学 × 金属材料工程</p>
+                <h4>4.1.2 纤维增强复合材料</h4><p><b>(1)核心研究</b>碳纤维／玻璃纤维／芳纶增强树脂基复合材料；层铺设计、各向异性力学性能、轻量化拓扑优化匹配</p><p><b>(2)学术热点</b>连续纤维增强机器人结构一体化制备复合材料结构阻尼与减振特性设计低成本高性能复合材料批量化应用</p><p><b>(3)跨学科融合</b>机构学 × 复合材料力学 × 制造工程</p>
+                <h4>4.1.3 高性能工程塑料与改性高分子材料</h4><p><b>(1)核心研究</b>PEEK、PPS、工程尼龙等在机器人减速器、支架、外壳的应用；耐磨、减摩、轻量化改性</p><p><b>(2)学术热点</b>玻纤／碳粉填充高分子耐磨材料精密传动部件高分子材料摩擦学设计</p><p><b>(3)跨学科融合</b>摩擦学 × 高分子材料 × 机械传动</p>
+                <h3>4.2 柔性与软体机器人基体材料</h3>
+                <h4>4.2.1 高弹性软体驱动基体材料</h4><p><b>(1)核心研究</b>硅胶（Ecoflex、Dragon Skin）、热塑性弹性体、柔性聚氨酯；大变形、抗撕裂、疲劳寿命优化</p><p><b>(2)学术热点</b>气动／液压软体机器人专用高弹性材料可变刚度软体基体材料抗疲劳软材料本构模型与失效机理</p><p><b>(3)跨学科融合</b>软体机械 × 软物质物理 × 高分子材料</p>
+                <h4>4.2.2 柔性可拉伸封装与结构材料</h4><p><b>(1)核心研究</b>可拉伸薄膜、柔性基底、柔性封装胶；适配柔性传感器／驱动器的力学匹配与防护</p><p><b>(2)学术热点</b>高延展性低模量柔性结构材料多层柔性材料界面结合强度设计</p><p><b>(3)跨学科融合</b>柔性电子 × 材料表面工程</p>
+                <h4>4.2.3 刚柔混合梯度材料</h4><p><b>(1)核心研究</b>刚性－柔性功能梯度材料；解决软体机器人承载力低、刚性机器人适应性差的矛盾</p><p><b>(2)学术热点</b>3D打印连续梯度刚柔复合结构材料仿生骨－肌梯度材料设计与制备</p><p><b>(3)跨学科融合</b>仿生机械 × 功能梯度材料 × 增材制造</p>
+                <h3>4.3 智能响应与驱动传感一体化功能材料</h3>
+                <h4>4.3.1 电活性智能致动材料</h4><p><b>(1)核心研究</b>介电弹性体（DEA）、离子聚合物金属复合材料（IPMC）、压电薄膜；电－力耦合响应特性、大变形优化</p><p><b>(2)学术热点</b>低电压驱动柔性电致动材料 自传感电活性致动材料 软体机器人阵列式致动材料集成</p><p><b>(3)跨学科融合</b>智能驱动 × 电介质物理 × 材料物理</p>
+                <h4>4.3.2 热／光／磁响应型智能材料</h4><p><b>(1)核心研究</b>形状记忆合金（SMA）、形状记忆聚合物（SMP）、磁响应软材料、光响应凝胶；外场刺激变形机理</p><p><b>(2)学术热点</b>4D打印可编程形状记忆材料无缆磁控软体机器人功能材料 低温快速响应SMA/SMP材料</p><p><b>(3)跨学科融合</b>仿生驱动 × 凝聚态物理 × 化学材料</p>
+                <h4>4.3.3 自感知传感功能材料</h4><p><b>(1)核心研究</b>压阻／电容／压电柔性传感材料、离子导电水凝胶、液态金属复合材料；力／触觉／应变传感特性</p><p><b>(2)学术热点</b>高灵敏度机器人电子皮肤材料 宽量程抗干扰柔性传感材料 传感-结构一体化复合材料</p><p><b>(3)跨学科融合</b>机器人感知 × 柔性电子 × 材料传感机理</p>
+                <h3>4.4 仿生界面与人机交互功能材料</h3>
+                <h4>4.4.1 仿生黏附与摩擦界面材料</h4><p><b>(1)核心研究</b>仿壁虎刚毛、仿章鱼吸盘、仿生防滑摩擦材料；非光滑表面界面力学设计</p><p><b>(2)学术热点</b>爬壁／攀爬机器人可逆黏附材料可控摩擦仿生界面材料</p><p><b>(3)跨学科融合</b>生物力学 × 界面物理 × 仿生材料</p>
+                <h4>4.4.2 仿生减阻与流体适配材料</h4><p><b>(1)核心研究</b>仿鲨鱼皮、仿鱼鳍减阻材料；水下／空中机器人流体力学适配</p><p><b>(2)学术热点</b>水下机器人超疏水减阻材料微型扑翼机器人低风阻表面材料</p><p><b>(3)跨学科融合</b>流体力学 × 仿生学 × 表面工程</p>
+                <h4>4.4.3 柔性穿戴与人体适配材料</h4><p><b>(1)核心研究</b>亲肤、透气、无刺激柔性材料；外骨骼、康复机器人人体工学适配</p><p><b>(2)学术热点</b>可穿戴机器人柔性衬垫材料人机耦合柔性缓冲材料</p><p><b>(3)跨学科融合</b>生物医学工程 × 人机交互 × 纺织材料</p>
+                <h3>4.5 极端环境服役特种防护材料</h3>
+                <h4>4.5.1 耐高低温与热防护材料</h4><p><b>(1)核心研究</b>耐高温硅胶、隔热陶瓷、相变材料；消防、工业高温机器人热防护</p><p><b>(2)学术热点</b>柔性耐高温隔热复合薄膜 关节热管理相变储能材料</p><p><b>(3)跨学科融合</b>热学工程 × 防护材料 × 极端环境机器人</p>
+                <h4>4.5.2 深海耐压与防腐密封材料</h4><p><b>(1)核心研究</b>深海耐压弹性体、防腐涂层、水密密封材料；海洋机器人长效防腐密封</p><p><b>(2)学术热点</b>万米级深海机器人耐压软材料 海洋高盐环境长效防腐涂层</p><p><b>(3)跨学科融合</b>海洋工程 × 腐蚀与防护材料 × 密封工程</p>
+                <h4>4.5.3 抗辐照与空间特种材料</h4><p><b>(1)核心研究</b>耐宇宙辐照高分子、抗原子氧材料、真空防逸散材料；空间机器人服役适配</p><p><b>(2)学术热点</b>空间可展开机构柔性耐辐照材料 深空探测机器人极端温度适配材料</p><p><b>(3)跨学科融合</b>航天工程 × 核材料 × 空间环境工程</p>
+                <h4>4.5.4 防尘防爆与安全防护材料</h4><p><b>(1)核心研究</b>阻燃、防爆、防尘密封材料；煤矿、化工、消防场景安全适配</p><p><b>(2)学术热点</b>本安型机器人阻燃柔性材料 粉尘环境自清洁表面材料</p><p><b>(3)跨学科融合</b>安全工程 × 功能防护材料</p>
+                <h3>4.6 生物兼容与医疗机器人专用材料</h3>
+                <h4>4.6.1 医用级生物兼容材料</h4><p><b>(1)核心研究</b>医用硅胶、聚乳酸（PLA）、聚己内酯（PCL）；手术、介入机器人生物安全性</p><p><b>(2)学术热点</b>微创医疗机器人柔性生物兼容材料低异物反应植入式机器人材料</p><p><b>(3)跨学科融合</b>临床医学 × 生物材料 × 医疗机器人</p>
+                <h4>4.6.2 可降解与环境友好材料</h4><p><b>(1)核心研究</b>可降解高分子、天然高分子基材料；体内诊疗微纳机器人可控降解</p><p><b>(2)学术热点</b>时序可控降解医疗机器人材料无残留可降解软体微型机器人材料</p><p><b>(3)跨学科融合</b>生物医学 × 降解材料化学 × 微纳机器人</p>
+                <h4>4.6.3 细胞与组织适配材料</h4><p><b>(1)核心研究</b>水凝胶、细胞亲和性材料；生物混合机器人、组织工程机器人</p><p><b>(2)学术热点</b>活细胞、机器融合生物兼容材料仿生组织柔性水凝胶材料</p><p><b>(3)跨学科融合</b>生物工程 × 软物质材料 × 医疗微操作机器人</p>
+                <h3>4.7 能量存储与收集功能材料</h3>
+                <h4>4.7.1 高功率密度电池材料</h4><p><b>(1)核心研究</b>固态电池、锂聚合物电池材料；机器人轻量化高能量密度供电</p><p><b>(2)学术热点</b>柔性可变形电池基底材料 人形机器人高倍率放电电极材料</p><p><b>(3)跨学科融合</b>能源材料 × 电池工程 × 机器人供能系统</p>
+                <h4>4.7.2 能量收集与转换材料</h4><p><b>(1)核心研究</b>压电、摩擦电、热电、光电转换材料；机器人环境自供能</p><p><b>(2)学术热点</b>柔性压电－摩擦复合发电材料 可穿戴／软体机器人自供能材料</p><p><b>(3)跨学科融合</b>能源工程 × 功能材料 × 自供能系统</p>
+                <h4>4.7.3 柔性超级电容材料</h4><p><b>(1)核心研究</b>碳纳米管、石墨烯基柔性电极材料；机器人瞬时大功率供能</p><p><b>(2)学术热点</b>结构－储能一体化复合骨架材料 可拉伸柔性超级电容材料</p><p><b>(3)跨学科融合</b>储能材料 × 机电集成</p>
+                <h3>4.8 增材制造与先进结构功能材料</h3>
+                <h4>4.8.1 3D打印专用机器人结构材料</h4><p><b>(1)核心研究</b>金属3D打印粉末、光敏树脂、连续纤维增强打印材料；适配复杂拓扑结构</p><p><b>(2)学术热点</b>点阵／晶格结构专用轻质打印材料 多材料3D打印梯度功能材料</p><p><b>(3)跨学科融合</b>增材制造 × 结构设计 × 材料成型</p>
+                <h4>4.8.2 4D打印智能变形材料</h4><p><b>(1)核心研究</b>刺激响应型打印材料、预应变编程材料；打印后自主变形机器人结构</p><p><b>(2)学术热点</b>多场响应4D打印软体机器人材料可重构机器人自变形材料</p><p><b>(3)跨学科融合</b>智能材料 × 先进制造 × 可重构机构</p>
+                <h4>4.8.3 超材料与声学/力学超结构材料</h4><p><b>(1)核心研究</b>声学超材料、力学超材料、负泊松比拉胀材料；减振、降噪、特殊力学特性</p><p><b>(2)学术热点</b>机器人关节宽频减振超材料轻量化高刚度负泊松比结构材料</p><p><b>(3)跨学科融合</b>超材料物理 × 振动工程 × 结构优化</p>
+                <h3>4.9 自修复与长效服役可靠性材料</h3>
+                <h4>4.9.1 本征型自修复材料</h4><p><b>(1)核心研究</b>可逆共价键、氢键自修复高分子、金属自修复合金；机器人结构损伤自主愈合</p><p><b>(2)学术热点</b>软体机器人自修复基体材料室温快速自修复柔性材料</p><p><b>(3)跨学科融合</b>智能材料 × 可靠性工程 × 仿生自愈</p>
+                <h4>4.9.2 外援型自修复与防护材料</h4><p><b>(1)核心研究</b>微胶囊自修复涂层、液态自修复结构；抗磨损、抗裂纹扩展</p><p><b>(2)学术热点</b>工业机器人长效自修复耐磨涂层极端环境自修复密封材料</p><p><b>(3)跨学科融合</b>表面工程 × 材料失效分析 × 可靠性设计</p>
+                <h4>4.9.3 抗疲劳与长寿命复合材料</h4><p><b>(1)核心研究</b>高循环疲劳材料、抗蠕变材料：机器人关节、驱动部件长效服役</p><p><b>(2)学术热点</b>柔性驱动器抗疲劳材料数据驱动材料疲劳寿命预测</p><p><b>(3)跨学科融合</b>疲劳力学 × 可靠性数学 × 材料工程</p>
+                <h3>4.10 电磁、热管理与界面功能配套材料</h3>
+                <h4>4.10.1 电磁屏蔽与抗干扰材料</h4><p><b>(1)核心研究</b>导电高分子、磁性吸波材料：机器人硬件EMC适配、抗电磁干扰</p><p><b>(2)学术热点</b>柔性可拉伸电磁屏蔽材料高密度关节电磁兼容复合材料</p><p><b>(3)跨学科融合</b>电磁学 × 电子工程 × 硬件集成</p>
+                <h4>4.10.2 高效热界面与散热材料</h4><p><b>(1)核心研究</b>导热凝胶、石墨烯导热膜、热管材料：机器人关节、芯片热管理</p><p><b>(2)学术热点</b>柔性可变形热界面材料结构-散热一体化复合材料</p><p><b>(3)跨学科融合</b>热传导工程 × 硬件热管理 × 集成设计</p>
+                <h4>4.10.3 界面粘接与密封材料</h4><p><b>(1)核心研究</b>柔性结构胶、防水密封胶、高低温适配粘接材料：机器人硬件集成密封</p><p><b>(2)学术热点</b>软-硬界面高强度柔性粘接材料长效耐老化密封材料</p><p><b>(3)跨学科融合</b>表面工程 × 封装技术 × 系统集成</p>
+            </div>
+        `;
+
+        // ---- 页面2：感知系统 ----
+        pageContents['page-2'] = `
+            <button class="back-to-home" onclick="navigateTo('page-home','首页')">← 返回首页</button>
+            <div class="section-block"><h2>二、感知系统</h2></div>
+            <div class="section-block">
+                <h2>1 视觉感知</h2>
+                <h3>1.1 视觉几何与底层成像理论</h3>
+                <p><b>(1)核心研究内容</b></p><p>相机成像模型、畸变校正、多视图几何、极线约束、投影几何；单目／双目／鱼眼／全景相机标定；光学系统误差建模与补偿。</p>
+                <p><b>(2)跨学科融合</b></p><p>计算机视觉 × 计算几何 × 光学工程 × 精密测量</p>
+                <p><b>(3)代表研究</b></p><p>牛津大学：Multiple View Geometry in Computer Vision（视觉几何奠基理论著作）苏黎世联邦理工：针对鱼眼相机的统一球面投影模型，ICCV2023中科院自动化所：非合作目标下的在线相机自标定方法，TIP2024</p>
+                <h4>1.1.1 非标定相机下的自监督几何学习</h4>
+                <h4>1.1.2 极端光学畸变（鱼眼／折反射）统一几何建模</h4>
+                <h4>1.1.3 物理成像退化（散射、模糊、噪声）的逆向建模</h4>
+                <h3>1.2 三维视觉感知与场景重建</h3>
+                <p><b>(1)核心研究内容</b></p><p>单目／双目／结构光／ToF深度估计；稠密重建、稀疏重建、表面重建；点云处理、体素表示、神经辐射场（NeRF）；机器人环境三维数字化。</p>
+                <p><b>(2)代表研究</b></p><p>NVIDIA：InstantNGP，毫秒级神经辐射场重建，SIGGRAPH2022MIT：DROID-SLAM稠密重建，CVPR2021斯坦福大学：NeRFlow动态场景神经重建，ECCV2022浙江大学：面向机器人的实时轻量化NeRF重建，ICRA2024微软亚洲研究院：结构光深度超分辨率，TPAMI2023</p>
+                <h4>1.2.1 实时在线三维重建（面向移动／人形机器人）</h4>
+                <h4>1.2.2 神经场（NeRF/InstantNGP）轻量化机器人端重建</h4>
+                <h4>1.2.3 无纹理／弱纹理场景鲁棒深度估计</h4>
+                <h4>1.2.4 动态物体遮挡下的场景补全</h4>
+                <h3>1.3 视觉定位与视觉－惯性导航（VIO/VSLAM）</h3>
+                <p><b>(1)核心研究内容</b></p><p>视觉特征提取与匹配（ORB、SIFT、SuperPoint）；视觉里程计；紧耦合／松耦合VIO；回环检测；重定位；面向机器人的实时定位。</p>
+                <p><b>(2)跨学科融合</b></p><p>视觉感知 × 状态估计 × 惯性导航 × 优化理论 × 分布式机器人</p>
+                <p><b>(3)代表研究</b></p><p>苏黎世联邦理工：ORB-SLAM3（通用VSLAM标杆），IEEE TRO 2021香港科技大学：VINS-Mono/Fusion（视觉惯性里程计经典），IEEE TRO 2018CMU：LIO-SAM激光－视觉紧耦合定位，IROS 2020清华大学：人形机器人视觉－惯性－动力学融合定位，ICRA 2025百度Apollo：动态城市环境下的鲁棒视觉重定位，CVPR 2024</p>
+                <h4>1.3.1 端到端学习型VIO/SLAM</h4><h4>1.3.2 无GPS、弱纹理、动态拥挤环境鲁棒SLAM</h4>
+                <h4>1.3.3 人形／四足机器人全身运动约束下的视觉定位</h4><h4>1.3.4 多机器人协同视觉定位</h4>
+                <h3>1.4 目标检测、语义分割与实例感知</h3>
+                <p><b>(1)核心研究内容</b>目标检测（两阶段／一阶段）、语义分割、实例分割、全景分割；机器人可操作物体识别、抓取位姿估计、障碍物检测。</p>
+                <p><b>(2)跨学科融合</b>视觉感知 × 深度学习 × 机器人操作规划 × 具身认知</p>
+                <p><b>(3)代表研究</b>Meta AI: DETR 端到端 Transformer 检测, ECCV 2020 斯坦福: OVTrack 开放词汇跟踪, CVPR 2023 谷歌 DeepMind: RoboDet 机器人专用目标检测, ICRA 2024 上海交通大学: 机器人抓取 affordance 分割, IEEE TRO 2023 中科院深圳先进院: 动态环境实时全景分割, IROS 2025</p>
+                <h4>1.4.1 开放词汇目标检测 (OV-Det)</h4><h4>1.4.2 小样本/零样本机器人视觉识别</h4>
+                <h4>1.4.3 端侧实时轻量化分割 (Transformer 轻量化)</h4><h4>1.4.4 可操作物体 affordance 感知</h4>
+                <h3>1.5 视觉目标跟踪与运动预测</h3>
+                <p><b>(1)核心研究内容</b>单目标/多目标跟踪(SOT/MOT):行人/车辆/动态障碍物轨迹预测;短期运动推理;人机交互意图视觉预测。</p>
+                <p><b>(2)跨学科融合</b>视觉 × 时序建模 × 强化学习 × 人机交互</p>
+                <p><b>(3)代表研究</b>牛津大学: ByteTrack 多目标跟踪, ECCV 2022 斯坦福: Trajectory Transformer 运动预测, ICLR 2022 波士顿动力+MIT: 人形机器人动态障碍规避视觉预测, Science Robotics 2024 北京大学: 人机协作意图视觉预测, IEEE TII 2024</p>
+                <h4>1.5.1 遮挡/模糊/快速运动下的鲁棒跟踪</h4><h4>1.5.2 基于Transformer的轨迹预测</h4><h4>1.5.3 机器人交互中人的意图视觉预判</h4>
+                <h3>1.6 事件视觉感知</h3>
+                <p><b>(1)核心研究内容</b>事件相机原理、事件-帧融合感知、高动态范围、高速运动视觉;低延迟、低功耗机器人视觉。</p>
+                <p><b>(2)跨学科融合</b>神经形态工程 × 视觉感知 × 实时信号处理 × 机器人控制</p>
+                <p><b>(3)代表研究</b>苏黎世联邦理工：Event-Camera SLAM 系列，IEEE TRO 2021-2024 慕尼黑工大：事件-帧融合深度估计，CVPR 2023 东京大学：高速机器人操作事件视觉伺服，Science Robotics 2022 浙江大学：四足机器人事件视觉定位，ICRA 2025</p>
+                <h4>1.6.1 事件驱动深度估计与SLAM</h4><h4>1.6.2 极端光照/高速运动下事件视觉</h4><h4>1.6.3 事件-惯性紧耦合状态估计</h4>
+                <h3>1.7 多模态视觉融合感知</h3>
+                <p><b>(1)核心研究内容</b>视觉+激光雷达、视觉+惯导、视觉+触觉、视觉+音频、视觉+文本；多模态特征对齐、鲁棒融合、不确定性建模。</p>
+                <p><b>(2)跨学科融合</b>视觉 × 多模态大模型 × 传感器融合 × 贝叶斯估计</p>
+                <p><b>(3)代表研究</b>Google DeepMind：RT-2 视觉-语言-动作模型，Science Robotics 2023 英伟达：VIMA 多模态具身机器人，NeurIPS 2022 卡内基梅隆大学：激光-视觉-惯性紧耦合融合，IROS 2024 清华大学：视觉-触觉融合物体属性感知，IEEE TRO 2025</p>
+                <h4>1.7.1 视觉-语言-动作（VLA）多模态模型</h4><h4>1.7.2 点云-图像融合表征学习</h4><h4>1.7.3 多模态不确定性感知融合</h4>
+                <h3>1.8 端侧轻量化视觉与硬件协同感知</h3>
+                <p><b>(1)核心研究内容</b>模型压缩、量化、剪枝、知识蒸馏；FPGA/ASIC/NPU加速；机器人端侧低功耗实时视觉推理；视觉-控制低延迟协同。</p>
+                <p><b>(2)跨学科融合</b>视觉算法 × 嵌入式系统 × 芯片设计 × 实时系统</p>
+                <p><b>(3)代表研究</b>MIT:机器人端侧大模型量化推理,ICRA 2024 谷歌:TensorFlow Lite for Microcontrollers嵌入式视觉 华为诺亚实验室:端侧视觉Transformer轻量化,CVPR 2023 哈尔滨工业大学:FPGA加速机器人实时视觉,TII 2024</p>
+                <h4>1.8.1 大模型端侧推理（量化／稀疏化）</h4><h4>1.8.2 视觉感知-运动控制同芯片协同</h4><h4>1.8.3 超低功耗机器人视觉感知</h4>
+                <h3>1.9 鲁棒视觉感知与抗干扰／对抗防御</h3>
+                <p><b>(1)核心研究内容</b>恶劣光照、雨雾、沙尘、模糊、欠曝、过曝下的鲁棒视觉；对抗样本攻击防御；视觉异常检测。</p>
+                <p><b>(2)跨学科融合</b>视觉 × 信息安全 × 图像处理 × 可靠性工程</p>
+                <p><b>(3)代表研究</b>加州伯克利：极端光照鲁棒视觉识别，ICCV 2023 微软：对抗样本防御机器人视觉，IEEE S&P 2024 上海交通大学：雨雾沙尘天气视觉复原，TPAMI 2023 国防科大：野外机器人鲁棒视觉感知，ICRA 2025</p>
+                <h4>1.9.1 全场景自适应图像增强</h4><h4>1.9.2 对抗鲁棒性学习</h4><h4>1.9.3 传感器故障下的视觉降级感知</h4>
+                <h3>1.10 特种场景机器人视觉感知</h3>
+                <p><b>(1)核心研究内容</b>空间、深海、医疗、核工业、微纳操作等极端环境视觉；显微视觉、内窥视觉、耐压视觉、抗辐照视觉。</p>
+                <p><b>(2)跨学科融合</b>视觉 × 航天／海洋／医疗工程 × 光学设计</p>
+                <p><b>(3)代表研究</b>约翰霍普金斯大学：手术机器人daVinci三维视觉系统中科院沈阳自动化所：深海机器人视觉增强，OE2024NASA：火星漫游车视觉定位系统，Science Robotics2021北京理工大学：核环境抗辐照视觉感知，IROS2025</p>
+                <h4>1.10.1 深海散射/低亮度视觉增强</h4><h4>1.10.2 空间微重力视觉定位</h4><h4>1.10.3 医疗手术机器人显微三维视觉</h4>
+                <h3>1.11 具身智能视觉与世界模型</h3>
+                <p><b>(1)核心研究内容</b>机器人视觉世界模型、物理常识推理、场景动态预测、视觉－动作闭环；从像素到动作的端到端视觉决策。</p>
+                <p><b>(2)跨学科融合</b>视觉 × 具身智能 × 强化学习 × 世界模型</p>
+                <p><b>(3)代表研究</b>谷歌DeepMind：Gato&WorldModels for Robotics斯坦福：MineDojo具身视觉环境学习，NeurIPS2022清华大学：人形机器人视觉世界模型，ICRA2025字节跳动AI Lab：视觉世界模型实时推理，ECCV2024</p>
+                <h4>1.11.1 视觉世界模型在线学习</h4><h4>1.11.2 反事实视觉推理</h4><h4>1.11.3 具身视觉闭环控制</h4>
+                <h3>1.12 视觉伺服与物理交互视觉</h3>
+                <p><b>(1)核心研究内容</b>基于图像的视觉伺服（IBVS）、位置-based视觉伺服（PBVS）；力位混合视觉控制；精密装配／操作视觉反馈。</p>
+                <p><b>(2)跨学科融合</b>视觉 × 机器人控制 × 精密操作 × 柔顺控制</p>
+                <p><b>(3)代表研究</b>法国国家信息与自动化研究所（INRIA）：经典视觉伺服理论奠基 新加坡国立大学：柔性机械臂视觉伺服，IEEE TRO 2023 东京大学：微纳操作视觉伺服，Science Advances 2024 华南理工大学：精密装配视觉-力融合伺服，ICRA 2024</p>
+                <h4>1.12.1 视觉-力觉融合伺服</h4><h4>1.12.2 柔性机器人视觉伺服</h4><h4>1.12.3 无标定视觉伺服</h4>
+            </div>
+            <div class="section-block">
+                <h2>2 非视觉感知</h2>
+                <h3>2.1 触觉感知</h3>
+                <p><b>(1)核心研究内容</b>接触力分布感知、滑移检测、纹理识别、软硬／粗糙度感知、接触形态识别；触觉传感器阵列设计、信号采集与解耦、触觉数据表征。</p>
+                <p><b>(2)跨学科融合</b>机械工程 × 柔性电子 × 材料科学 × 模式识别 × 控制工程</p>
+                <p><b>(3)代表研究</b>斯坦福大学：OptoTouch光纤触觉传感器，高分辨率三维力感知，Nature Electronics 2021 麻省理工学院：TacTip仿生触觉传感器，仿人类指尖触觉，ICRA 2022 清华大学：柔性离子凝胶电子皮肤，宽量程力感知，Advanced Materials 2023 上海交通大学：GelSight系列高分辨触觉成像，IEEE TRO 2020-2024 慕尼黑工业大学：动态滑移触觉感知算法，Science Robotics 2023 北京航空航天大学：仿生指纹结构柔性触觉传感器，ACS Nano 2024</p>
+                <h4>2.1.1 高分辨率柔性电子皮肤阵列感知</h4><h4>2.1.2 触觉-视觉跨模态表征学习</h4>
+                <h4>2.1.3 动态滑移/旋转滑移实时检测</h4><h4>2.1.4 织物/软体物体精细触觉纹理识别</h4><h4>2.1.5 端侧轻量化触觉特征提取</h4>
+                <h3>2.2 力与力矩感知（机器人操控、柔顺控制核心）</h3>
+                <p><b>(1)核心研究内容</b>六维腕力传感器、关节力矩传感器、指尖微型力传感器；力解耦算法、零漂补偿、动态力响应、碰撞检测、力控反馈。</p>
+                <p><b>(2)跨学科融合</b>精密机械 × 传感技术 × 控制理论 × 信号处理</p>
+                <p><b>(3)代表研究</b>瑞士ATI：Gamma系列六维力传感器（工业标杆）苏黎世联邦理工：关节集成式力矩传感，ICRA2021东京大学：无传感器力观测器，IEEE TRO2022哈尔滨工业大学：重载机器人六维力传感器，机械工程学报2023谷歌DeepMind：指尖微型力传感，适配灵巧手操作，ICRA2024</p>
+                <h4>2.2.1 微型化集成式六维力传感</h4><h4>2.2.2 无传感器力估计（Sensorless Force Estimation）</h4>
+                <h4>2.2.3 柔性可变刚度力传感</h4><h4>2.2.4 力-位混合感知与柔顺控制协同</h4>
+                <h3>2.3 接近觉与近距离测距感知（非接触预接触感知）</h3>
+                <p><b>(1)核心研究内容</b>电容式接近觉、电感式接近觉、光电式接近觉；微距离测距、障碍物预检测、避碰预警、夹持前目标定位。</p>
+                <p><b>(2)跨学科融合</b>电子工程 × 电磁学 × 微机电系统（MEMS）</p>
+                <p><b>(3)代表研究</b>卡内基梅隆大学：电容式柔性接近传感器，ICRA 2022 德国宇航中心（DLR）：机器人关节接近觉避障系统，IROS 2021 华南理工大学：光电－电容融合接近传感，Sensors 2023</p>
+                <h4>2.3.1 触觉－接近觉一体化传感</h4><h4>2.3.2 非金属／软体目标接近感知</h4><h4>2.3.3 微型机器人集成式接近传感</h4>
+                <h3>2.4 惯性与姿态感知</h3>
+                <p><b>(1)核心研究内容</b>MEMS-IMU（加速度计+陀螺仪）、磁力计、姿态解算（AHRS）、零速修正、惯性里程计、振动抑制、漂移补偿。</p>
+                <p><b>(2)跨学科融合</b>惯性导航 × 状态估计 × 优化理论 × 机器人动力学</p>
+                <p><b>(3)代表研究</b>香港科技大学：VINS-Fusion惯性－视觉紧耦合，IEEE TRO 2018 苏黎世联邦理工：IMU预积分理论，TRO 2015 国防科技大学：高动态机器人惯性感知，ICRA 2024 博世：BMI系列高性能MEMS-IMU（工业级标杆）</p>
+                <h4>2.4.1 超低成本IMU高精度姿态解算</h4><h4>2.4.2 人形／四足机器人动力学－惯性融合感知</h4>
+                <h4>2.4.3 极端振动下惯性感知鲁棒性优化</h4><h4>2.4.4 纯惯性导航（无视觉／GPS）长时间定位</h4>
+                <h3>2.5 听觉与振动感知</h3>
+                <p><b>(1)核心研究内容</b>声源定位、语音指令识别、环境异响检测、机器人关节振动感知、故障声纹诊断、碰撞声感知。</p>
+                <p><b>(2)跨学科融合</b>声学工程 × 信号处理 × 故障诊断 × 人机交互</p>
+                <p><b>(3)代表研究</b>谷歌：机器人听觉环境感知，ICRA 2023 东京大学：振动感知辅助地形分类，Science Robotics 2022 浙江大学：声呐-听觉融合水下机器人感知，OE 2024 西安交通大学：机器人关节故障声纹诊断，IEEE TII 2023</p>
+                <h4>2.5.1 机器人听觉-视觉协同环境感知</h4><h4>2.5.2 基于振动声纹的硬件健康监测</h4>
+                <h4>2.5.3 嘈杂环境下鲁棒声源定位</h4><h4>2.5.4 听觉感知辅助地形识别</h4>
+                <h3>2.6 温度与热感知（热触觉、环境监测、安全感知）</h3>
+                <p><b>(1)核心研究内容</b>接触式温度传感、红外热成像、柔性热传感、热触觉感知、高温/低温环境监测、人体体温感知。</p>
+                <p><b>(2)跨学科融合</b>热工学 × 红外光学 × 柔性电子</p>
+                <p><b>(3)代表研究</b>斯坦福大学：柔性热触觉电子皮肤，Nature Communications 2022 中科院沈阳自动化所：消防机器人红外热感知系统，IROS 2023 康奈尔大学：可拉伸温度-力复合传感器，Advanced Functional Materials 2024</p>
+                <h4>2.6.1 柔性热-力双模态感知</h4><h4>2.6.2 极端温度场机器人实时热感知</h4><h4>2.6.3 热成像辅助障碍物/生命检测</h4>
+                <h3>2.7 气体与化学感知（电子鼻、环境监测、危险检测）</h3>
+                <p><b>(1)核心研究内容</b>气体传感器阵列（电子鼻）、VOC检测、易燃易爆/有毒气体感知、气味识别、环境空气质量监测。</p>
+                <p><b>(2)跨学科融合</b>化学传感 × 环境工程 × 模式识别 × 安全工程</p>
+                <p><b>(3)代表研究</b>苏黎世联邦理工：机器人电子鼻气味源定位，Science Robotics 2021 清华大学：金属氧化物气体传感器阵列，Sensors and Actuators B 2023 东京工业大学：水下机器人化学感知，IEEE JOE 2024</p>
+                <h4>2.7.1 仿生电子鼻高灵敏度气体感知</h4><h4>2.7.2 机器人自主气味源定位</h4><h4>2.7.3 柔性可穿戴气体传感</h4>
+                <h3>2.8 超声感知（测距、成像、避障、水下感知）</h3>
+                <p><b>(1)核心研究内容</b>超声测距、超声成像、超声避障、水下超声通信与感知、微小目标超声检测。</p>
+                <p><b>(2)跨学科融合</b>声学工程 × 海洋工程 × 医疗工程</p>
+                <p><b>(3)代表研究</b>约翰霍普金斯大学：医疗机器人体内超声成像，IEEE TMECH 2022 中科院声学所：深海机器人超声感知系统，2023 卡内基梅隆大学：超声辅助暗环境避障，ICRA 2021</p>
+                <h4>2.8.1 超声-视觉融合三维建模</h4><h4>2.8.2 微型机器人体内超声感知</h4><h4>2.8.3 浑浊水体/粉尘环境鲁棒超声感知</h4>
+                <h3>2.9 雷达感知（毫米波、UWB、地形与障碍感知）</h3>
+                <p><b>(1)核心研究内容</b>毫米波雷达测距/测速/成像、UWB定位、穿墙感知、恶劣天气（雨/雾/尘）环境感知。</p>
+                <p><b>(2)跨学科融合</b>电磁场与微波技术 × 信号处理 × 定位技术</p>
+                <p><b>(3)代表研究</b>特斯拉：人形机器人毫米波雷达感知系统 卡内基梅隆大学：UWB-雷达融合室内定位，ICRA 2023 德国大陆集团：车载毫米波机器人避障，IROS 2022 北京理工大学：野外机器人雷达地形感知，2024</p>
+                <h4>2.9.1 雷达-视觉-惯性多源融合定位</h4><h4>2.9.2 微型机器人毫米波雷达集成</h4><h4>2.9.3 动态障碍物雷达轨迹预测</h4>
+                <h3>2.10 电磁与磁场感知（地磁、金属探测、定位）</h3>
+                <p><b>(1)核心研究内容</b>地磁导航、金属目标探测、电流感知、磁场定位、电磁环境感知。</p>
+                <p><b>(2)跨学科融合</b>电磁学 × 地球物理学 × 特种机器人</p>
+                <p><b>(3)代表研究</b>NASA：火星车地磁感知导航，Science Robotics 2021 南洋理工大学：柔性磁传感器阵列，Advanced Materials 2023 中国石油大学：管道机器人电磁缺陷检测，IEEE TII 2024</p>
+                <h4>2.10.1 地磁-惯性融合无GPS导航</h4><h4>2.10.2 软体机器人柔性磁传感</h4><h4>2.10.3 电磁感知辅助管道检测</h4>
+                <h3>2.11 微纳与精密操作感知</h3>
+                <p><b>(1)核心研究内容</b>MEMS微力传感、纳米级位移感知、微纳操作力反馈、细胞操作触觉感知。</p>
+                <p><b>(2)跨学科融合</b>MEMS工程 × 微纳制造 × 生物医学工程</p>
+                <p><b>(3)代表研究</b>加州大学伯克利：MEMS微力传感器，IEEE J-MEMS 2022 上海交通大学细胞操作微纳感知，Science Advances 2023 哈尔滨工业大学：微操作机器人精密力传感，ICRA 2024</p>
+                <h4>2.11.1 单细胞操作微力感知</h4><h4>2.11.2 芯片级微纳机器人感知</h4><h4>2.11.3 微操作视觉-微力融合</h4>
+                <h3>2.12 柔性与可拉伸非视觉感知（软体机器人）</h3>
+                <p><b>(1)核心研究内容</b>液态金属传感、离子导电传感、可拉伸力/温/湿传感、软体机器人形变感知。</p>
+                <p><b>(2)跨学科融合</b>软物质工程 × 柔性电子 × 软体机器人</p>
+                <p><b>(3)代表研究</b>哈佛大学：液态金属柔性传感，Science Robotics 2021 浙江大学：可拉伸离子凝胶触觉传感，Nature Communications 2024 麻省理工学院：软体机器人形变自感知，ICRA 2023</p>
+                <h4>2.12.1 全软体机器人自感知一体化</h4><h4>2.12.2 大变形下传感信号解耦</h4><h4>2.12.3 可拉伸传感-驱动集成</h4>
+                <h3>2.13 自供电与无源非视觉感知</h3>
+                <p><b>(1)核心研究内容</b>摩擦纳米发电传感、压电自供电传感、热电传感、无源无线非视觉感知。</p>
+                <p><b>(2)跨学科融合</b>能源材料 × 纳米发电 × 柔性电子</p>
+                <p><b>(3)代表研究</b>佐治亚理工：摩擦电触觉自供电传感，Nature Energy 2022 复旦大学：压电自供电力传感器，Advanced Materials 2023 中科院北京纳米所：无源无线气体感知，Nano Energy 2024</p>
+                <h4>2.13.1 自供电电子皮肤</h4><h4>2.13.2 无源无线触觉/力觉感知</h4><h4>2.13.3 极端环境自供电非视觉传感</h4>
+                <h3>2.15 仿生非视觉感知</h3>
+                <p><b>(1)核心研究内容</b>仿生毛发感知、鱼类侧线感知、昆虫触角感知、蛇类红外感知、振动仿生感知。</p>
+                <p><b>(2)跨学科融合</b>生物力学 × 仿生学 × 传感技术</p>
+                <p><b>(3)代表研究</b>剑桥大学：仿生鱼类侧线水下感知，Science Robotics 2022 瑞士洛桑联邦理工：仿生毛发振动传感器，Nature Communications 2023 东南大学：蛇类仿生红外感知，ICRA 2024</p>
+                <h4>2.15.1 水下仿生侧线流体感知</h4><h4>2.15.2 仿生毛发微弱振动感知</h4><h4>2.15.3 多模仿生非视觉融合</h4>
+                <h3>2.16 非视觉感知可靠性与鲁棒性</h3>
+                <p><b>(1)核心研究内容</b>传感器漂移补偿、噪声抑制、抗电磁干扰、故障诊断、失效检测、多传感冗余感知。</p>
+                <p><b>(2)跨学科融合</b>可靠性工程 × 信号处理 × 机器学习</p>
+                <p><b>(3)代表研究</b>加州理工：IMU漂移自适应补偿，IEEE TRO 2022 上海交通大学：触觉传感器故障诊断，IEEE TII 2023 国防科大：极端电磁环境非视觉感知抗干扰，ICRA 2024</p>
+                <h4>2.16.1 数据驱动非视觉感知误差补偿</h4><h4>2.16.2 极端环境感知鲁棒性优化</h4><h4>2.16.3 感知故障在线诊断与重构</h4>
+                <h3>2.17 多模态非视觉传感器融合</h3>
+                <p><b>(1)核心研究内容</b>触觉-力觉-接近觉融合、惯性-超声-雷达融合、热-气-振动融合；卡尔曼滤波、贝叶斯估计、深度学习融合。</p>
+                <p><b>(2)跨学科融合</b>传感器融合 × 状态估计 × 人工智能</p>
+                <p><b>(3)代表研究</b>谷歌DeepMind：触觉-力觉融合操控感知，Science Robotics2023卡内基梅隆大学：纯非视觉自主导航融合算法，ICRA2024清华大学：多模非视觉融合灵巧手操作，IEEE TRO2024</p>
+                <h4>2.17.1 非视觉多模态不确定性感知融合</h4><h4>2.17.2 端到端非视觉融合表征学习</h4><h4>2.17.3 无视觉纯非视觉自主定位</h4>
+            </div>
+            <div class="section-block">
+                <h2>3 传感器融合</h2>
+                <h3>3.1 融合层级与数据表征</h3>
+                <h4>3.1.1 数据级融合（原始信号级融合）</h4><p><b>(1)核心研究内容</b>原始传感器数据对齐（时间／空间同步）、信号预处理与噪声抑制、多源原始数据直接融合、异构数据格式统一（点云／图像／IMU/力信号）、数据级冗余信息剔除。</p><p><b>(2)前沿学术热点</b>跨传感器采样频率自适应同步（如激光10Hz+相机30Hz+IMU 200Hz）原始信号级深度学习融合（端到端原始数据输入）事件相机-传统相机原始数据融合数据级融合的硬件加速(FPGA/ASIC实现)</p><p><b>(3)跨学科融合</b>信号处理 × 嵌入式系统 × 计算机体系结构</p><p><b>(4)代表研究</b>苏黎世联邦理工：事件-帧原始数据融合深度估计，CVPR 2023清华大学：激光-视觉原始点云-像素对齐融合，ICRA 2024卡内基梅隆大学：IMU-视觉原始信号紧耦合融合，IEEE TRO 2023</p>
+                <h4>3.1.2 特征级融合（中间表示级融合）</h4><p><b>(1)核心研究内容</b>多模态特征提取、特征对齐与匹配、跨模态特征转换、特征级信息互补、深度特征融合网络设计。</p><p><b>(2)前沿学术热点</b>Transformer-based跨模态特征融合（如BEVFormer、Fusion-Mamba）稀疏-稠密特征融合（激光稀疏点云+视觉稠密图像）特征级不确定性建模与传播轻量化特征融合网络（适配端侧机器人）</p><p><b>(3)跨学科融合</b>深度学习 × 计算机视觉 × 模式识别</p><p><b>(4)代表研究</b>上海交通大学：多流网络激光-视觉特征融合3D检测（MuSTD），IROS 2025（SOTA）谷歌DeepMind：RT-2视觉-语言-动作特征融合，Science Robotics 2023南洋理工大学：Fusion-Mamba门控机制特征融合，CVPR 2025（推理速度提升2.7倍）</p>
+                <h4>3.1.3 决策级融合（结果级融合）</h4><p><b>(1)核心研究内容</b>多源感知结果一致性校验、决策权重自适应分配、冲突证据处理、贝叶斯推理融合、D-S证据理论应用、决策级鲁棒性提升。</p><p><b>(2)前沿学术热点</b>多模态决策融合的可解释性增强传感器失效时的决策级自适应降级大语言模型辅助决策级融合（语义一致性校验）决策级融合的实时性优化（毫秒级推理）</p><p><b>(3)跨学科融合</b>人工智能 × 决策理论 × 可靠性工程</p><p><b>(4)代表研究</b>微软：多模态决策融合的不确定性量化，ICRA 2024 加州理工：基于贝叶斯推理的决策级融合，IEEE TRO 2023 北京大学：LLM辅助机器人多模态决策融合，IROS 2025</p>
+                <h4>3.1.4 多级混合融合（分层融合架构）</h4><p><b>(1)核心研究内容</b>数据-特征-决策多级融合架构设计、层级间信息反馈机制、自适应融合层级选择、混合融合的计算资源优化。</p><p><b>(2)前沿学术热点</b>动态任务导向的自适应融合层级切换边缘-云端协同多级融合（边缘数据级+云端决策级）多级融合的能耗-精度权衡优化</p><p><b>(3)跨学科融合</b>分布式计算 × 系统工程 × 机器人学</p><p><b>(4)代表研究</b>清华大学：具身智能多级混合融合框架，Nature Machine Intelligence 2025（综述）谷歌DeepMind：机器人任务自适应多级融合，Science Robotics 2024 苏黎世联邦理工：分层融合SLAM系统，ICRA 2024</p>
+                <h3>3.2 融合算法与数学基础学术方向</h3>
+                <h4>3.2.1 传统概率融合方法</h4><p><b>(1)核心研究内容</b>卡尔曼滤波（KF/EKF/UKF）、粒子滤波、贝叶斯估计、D-S证据理论、信息论融合（熵/互信息）、因子图优化。</p><p><b>(2)前沿学术热点</b>自适应卡尔曼滤波（噪声协方差在线估计）鲁棒粒子滤波（异常值检测与处理）因子图多传感器融合（如LIO-SAM、VINS-Fusion）概率融合与深度学习结合（深度概率滤波）</p><p><b>(3)跨学科融合</b>概率论 × 优化理论 × 机器学习</p><p><b>(4)代表研究</b>香港科技大学：VINS-Fusion因子图视觉-惯性融合，IEEE TRO 2018（经典）卡内基梅隆大学：LIO-SAM激光-惯性-视觉因子图融合，IROS 2020 麻省理工学院：深度卡尔曼滤波，ICRA 2023</p>
+                <h4>3.2.2 深度学习融合方法</h4><p><b>(1)核心研究内容</b>多模态神经网络、跨模态注意力机制、融合层设计、端到端融合模型、迁移学习辅助融合。</p><p><b>(2)前沿学术热点</b>Transformer/Transformer变体融合架构（如BEVCar、SpaceMind）Mamba-based融合（线性复杂度长序列融合）大语言模型（LLM）辅助多模态融合（如RT-2、VIMA）小样本/零样本跨模态融合</p><p><b>(3)跨学科融合</b>深度学习 × 自然语言处理 × 计算机视觉</p><p><b>(4)代表研究</b>谷歌DeepMind：RT-2视觉-语言-动作融合，Science Robotics 2023 慕尼黑工大：BEVCar相机-雷达BEV融合，IROS 2024 上海交通大学：Fusion-Mamba跨模态融合，CVPR 2025 斯坦福大学：SpaceMind视觉引导多模态融合，2025</p>
+                <h4>3.2.3 鲁棒融合与异常处理</h4><p><b>(1)核心研究内容</b>传感器故障检测、异常值识别与剔除、鲁棒统计融合、容错融合架构、传感器失效自适应降级。</p><p><b>(2)前沿学术热点</b>多传感器故障诊断与隔离（FDI）传感器可用性感知融合（ASF）对抗样本鲁棒融合（防御传感器攻击）13类传感器损坏下的鲁棒融合（如RoboMap）</p><p><b>(3)跨学科融合</b>可靠性工程 × cybersecurity × 控制理论</p><p><b>(4)代表研究</b>苏黎世联邦理工：传感器故障鲁棒因子图融合，ICRA 2024 上海交通大学：RoboMap高精地图鲁棒融合框架，IROS 2025（13类传感器损坏下仍SOTA）微软：对抗样本防御机器人融合感知，IEEE S&P 2024 加州理工：可用性感知传感器融合，2025</p>
+                <h4>3.2.4 不确定性感知融合</h4><p><b>(1)核心研究内容</b>传感器噪声建模、融合不确定性量化、概率不确定性传播、贝叶斯深度学习融合、可信融合（Trustworthy Fusion）。</p><p><b>(2)前沿学术热点</b>多模态不确定性联合建模（如激光测距不确定性+视觉像素不确定性）不确定性引导的自适应融合权重分配 不确定性感知决策（融合结果置信度用于任务决策）鲁棒不确定性估计（异常值下仍准确）</p><p><b>(3)跨学科融合</b>贝叶斯统计 × 深度学习 × 决策理论</p><p><b>(4)代表研究</b>牛津大学：多传感器不确定性融合，ICRA 2023 慕尼黑工大：不确定性感知BEV融合，IROS 2024 清华大学：具身智能不确定性融合，Nature Machine Intelligence 2025</p>
+                <h3>3.3 典型传感器组合融合学术方向</h3>
+                <h4>3.3.1 视觉-激光雷达融合（最成熟组合）</h4><p><b>(1)核心研究内容</b>点云-图像配准、深度互补（视觉单目深度+激光精确测距）、语义融合（视觉语义+激光几何）、BEV视角融合、3D检测融合。</p><p><b>(2)前沿学术热点</b>NeRF与激光-视觉融合结合（如ICRA 2024首个NeRF-based SLAM系统）激光稀疏点云补全（视觉引导）全天候鲁棒融合（雨/雾/雪/强光）轻量化激光-视觉融合（端侧实时推理）</p><p><b>(3)跨学科融合</b>计算机视觉 × 3D几何 × 机器人学</p><p><b>(4)代表研究</b>西澳大学+墨尔本大学：MuStD激光-视觉3D检测融合，IROS 2025（SOTA）苏黎世联邦理工：NeRF-LiDAR-视觉融合SLAM，ICRA 2024 上海交通大学：混合全向视觉-激光地图构建，IROS 2025</p>
+                <h4>3.3.2 视觉-惯性融合（VIO）</h4><p><b>(1)核心研究内容</b>IMU预积分、视觉-惯性紧耦合/松耦合、零速修正（ZUPT）、重力矢量估计、尺度恢复（单目+IMU）。</p><p><b>(2)前沿学术热点</b>事件相机-惯性融合（高动态/高速场景）低精度IMU+视觉高精度融合（成本降低）人形机器人动力学-惯性-视觉融合长时漂移抑制（闭环检测+惯性）</p><p><b>(3)跨学科融合</b>惯性导航 × 计算机视觉 × 机器人动力学</p><p><b>(4)代表研究</b>苏黎世联邦理工：ORB-SLAM3视觉-惯性-激光融合，IEEE TRO 2021香港科技大学：VINS-Mono视觉-惯性紧耦合，IEEE TRO 2018清华大学：人形机器人视觉-惯性-动力学融合，ICRA 2025</p>
+                <h4>3.3.3 触觉-力觉-接近觉融合（物理交互核心）</h4><p><b>(1)核心研究内容</b>接触前接近感知、接触时力分布感知、接触后滑移检测、多模态物理交互反馈、力-触觉-视觉融合操控。</p><p><b>(2)前沿学术热点</b>柔性电子皮肤多模态融合（力/触觉/温度/接近）触觉-力觉融合灵巧手操作（如Google DeepMind DexNet）接近-触觉-力觉三模态预接触-接触-操作全流程融合软体机器人形变-力-触觉融合</p><p><b>(3)跨学科融合</b>机械工程 × 柔性电子 × 机器人控制</p><p><b>(4)代表研究</b>谷歌DeepMind：触觉-力觉融合灵巧手操控，Science Robotics 2023 斯坦福大学：OptoTouch光纤触觉-力觉融合，Nature Electronics 2021 上海交通大学：GelSight触觉-视觉融合，IEEE TRO 2020-2024</p>
+                <h4>3.3.4 多模态非视觉融合（无视觉场景）</h4><p><b>(1)核心研究内容</b>惯性-超声-雷达融合、触觉-力觉-接近觉融合、热-气-振动融合、纯非视觉自主导航、非视觉融合定位。</p><p><b>(2)前沿学术热点</b>无视觉环境纯非视觉融合（如黑暗／烟雾／粉尘）软体机器人非视觉多模态融合自感知自供电非视觉传感器融合（无电池）极端环境非视觉融合（深海／太空／核环境）</p><p><b>(3)跨学科融合</b>非视觉感知 × 传感器融合 × 特种工程</p><p><b>(4)代表研究</b>卡内基梅隆大学：纯非视觉自主导航融合算法，ICRA 2024 清华大学：多模非视觉融合灵巧手操作，IEEE TRO 2024 中科院沈阳自动化所：深海机器人非视觉融合感知，OE 2024</p>
+                <h4>3.3.5 视觉-语言-动作融合（具身智能核心）</h4><p><b>(1)核心研究内容</b>视觉-语言表征对齐、语言指令引导视觉感知、视觉-动作闭环融合、多模态具身智能模型（如RT-2、VIMA）。</p><p><b>(2)前沿学术热点</b>LLM辅助多模态融合（如GPT-4V+机器人感知）视觉-语言-动作端到端融合（从指令到执行）跨模态上下文理解（如"拿起红色杯子"需视觉识别+动作规划）具身视觉语言模型（EVLM）融合</p><p><b>(3)跨学科融合</b>自然语言处理 × 计算机视觉 × 机器人学 × 具身智能</p><p><b>(4)代表研究</b>谷歌DeepMind：RT-2视觉-语言-动作融合，Science Robotics 2023 英伟达：VIMA多模态具身机器人融合，NeurIPS 2022斯坦福大学：具身视觉语言模型融合，ICRA 2025</p>
+                <h3>3.4 硬件与系统级融合学术方向</h3>
+                <h4>3.4.1 融合硬件加速与集成</h4><p><b>(1)核心研究内容</b>FPGA/ASIC融合加速、SoC集成多传感器接口、传感器-处理器共封装（CoP）、边缘计算融合、低延迟融合硬件设计。</p><p><b>(2)前沿学术热点</b>融合算法硬件化（如卡尔曼滤波FPGA加速）多传感器同步采集硬件（时间戳精度&lt;1μs）事件相机-处理器集成（低延迟）融合处理单元（FPU）专用芯片设计</p><p><b>(3)跨学科融合</b>微电子 × 计算机体系结构 × 嵌入式系统</p><p><b>(4)代表研究</b>麻省理工学院：机器人端侧融合硬件加速，ICRA 2024 华为诺亚实验室：视觉-激光融合ASIC加速，CVPR 2024 苏黎世联邦理工：事件相机-处理器集成系统，IEEE JSSC 2023</p>
+                <h4>3.4.2 传感器同步与标定技术</h4><p><b>(1)核心研究内容</b>时间同步（硬件/软件同步）、空间标定（外参估计）、内参在线校准、多传感器联合标定、自标定技术。</p><p><b>(2)前沿学术热点</b>多传感器自动标定（无需人工干预）动态标定（传感器漂移在线修正）无标定融合（如无标定视觉伺服）跨模态自标定（如视觉-激光自标定）</p><p><b>(3)跨学科融合</b>精密测量 × 计算机视觉 × 机器人学</p>
+                <h4>3.4.3 边缘-云端协同融合</h4><p><b>(1)核心研究内容</b>边缘端实时融合（低延迟）、云端全局融合（高精度）、边缘-云端数据传输优化、任务自适应融合分配（边缘/云端）、联邦融合学习。</p><p><b>(2)前沿学术热点</b>边缘轻量级融合+云端重融合的混合架构 联邦学习多机器人融合（数据隐私保护）5G/6G低延迟边缘-云端融合 边缘-云端融合的能耗优化</p><p><b>(3)跨学科融合</b>分布式计算 × 通信工程 × 机器人学</p>
+                <h3>3.5 新兴融合技术</h3>
+                <h4>3.5.1 具身智能融合与世界模型</h4><p><b>(1)核心研究内容</b>机器人视觉世界模型、多模态世界模型、物理常识推理融合、场景动态预测融合、视觉-动作闭环融合。</p><p><b>(2)前沿学术热点</b>多传感器融合世界模型（如Gato、World Models）反事实融合推理（如"如果我推这个杯子会怎样"）具身视觉闭环融合控制 世界模型在线学习与更新</p><p><b>(3)跨学科融合</b>具身智能 × 强化学习 × 世界模型 × 机器人学</p>
+                <h4>3.5.2 多智能体协同融合感知</h4><p><b>(1)核心研究内容</b>分布式多传感器融合、多机器人数据共享、协同标定、联邦融合学习、多智能体全局感知融合。</p><p><b>(2)前沿学术热点</b>5G/6G支持的低延迟多智能体融合 隐私保护协同融合（联邦学习）异构机器人协同融合（人形+四足+无人机）多智能体融合构建全局地图</p><p><b>(3)跨学科融合</b>分布式人工智能 × 通信工程 × 机器人学</p>
+            </div>
+            <div class="section-block">
+                <h2>4 感知可靠性</h2>
+                <h3>4.1 感知不确定性建模与量化</h3>
+                <p>4.1.1 深度学习感知模型的不确定性校准（如温度缩放、蒙特卡洛dropout）</p>
+                <p>4.1.2 任务感知型不确定性量化（针对特定机器人任务的不确定性评估）</p>
+                <p>4.1.3 多传感器融合中的不确定性传播与聚合（如因子图中的不确定性传递）</p>
+                <p>4.1.4 动态环境下的不确定性在线更新与自适应调整</p>
+                <h3>4.2 鲁棒感知估计与异常值处理</h3>
+                <p>4.2.1 高比例异常值下的鲁棒感知估计</p><p>4.2.2 动态环境中运动物体引起的异常值鲁棒处理</p>
+                <p>4.2.3 对抗样本攻击下的感知鲁棒性增强</p><p>4.2.4 轻量级鲁棒感知算法（适配端侧机器人实时推理）</p>
+                <h3>4.3 传感器故障诊断与容错感知</h3>
+                <p>4.3.1 多传感器联合故障诊断（同时检测多个传感器故障）</p><p>4.3.2 早期故障预警与预测性维护（基于感知数据的传感器健康趋势分析）</p>
+                <p>4.3.3 故障感知下的自适应感知重构（自动切换感知模态或融合策略）</p><p>4.3.4 软体机器人柔性传感器的故障诊断（形变引起的传感异常检测）</p>
+                <h3>4.4 感知系统漂移补偿与长期稳定性</h3>
+                <p>4.4.1 超低成本IMU的长期漂移自适应补偿（如MEMS-IMU的漂移抑制）</p><p>4.4.2 多传感器数据交叉校验的漂移检测与校正</p>
+                <p>4.4.3 深度学习驱动的端到端漂移补偿（无需显式建模）</p><p>4.4.4 极端环境（高温/低温/振动）下的漂移鲁棒性优化</p>
+                <h3>4.5 多传感冗余与容错融合</h3>
+                <p>4.5.1 异构传感器冗余融合（如视觉+激光+雷达的互补冗余）</p><p>4.5.2 软体机器人的分布式冗余传感（柔性电子皮肤的多节点冗余）</p>
+                <p>4.5.3 冗余感知的能耗-可靠性权衡优化（动态激活/休眠冗余传感器）</p><p>4.5.4 边缘-云端协同的冗余感知（本地感知+云端验证的双重保障）</p>
+                <h3>4.6 感知系统实时监控与健康管理</h3>
+                <p>4.6.1 任务感知型实时监控（针对特定操作/导航任务的感知性能评估）</p><p>4.6.2 轻量级在线监控算法（不影响机器人实时操作性能）</p>
+                <p>4.6.3 感知系统数字孪生（虚拟模型与物理系统实时比对，提前发现潜在故障）</p><p>4.6.4 人机协同感知监控（结合人类反馈的感知可靠性提升）</p>
+                <h3>4.7 自适应感知与动态可靠性保障</h3>
+                <p>4.7.1 动态环境下的感知模态自动选择（如从视觉切换到激光雷达，适应黑暗环境）</p><p>4.7.2 算力受限下的感知精度自适应调整（保证核心任务可靠性）</p>
+                <p>4.7.3 多任务场景下的感知资源动态分配（高优先级任务获得更多感知资源）</p><p>4.7.4 软体机器人的形变自适应感知（根据形变状态调整感知策略）</p>
+            </div>
+        `;
+
+        // ---- 页面3：决策与控制系统（简要骨架） ----
+        pageContents['page-3'] = `
+            <button class="back-to-home" onclick="navigateTo('page-home','首页')">← 返回首页</button>
+            <div class="section-block"><h2>三、决策与控制系统</h2></div>
+            <div class="section-block">
+                <h2>1 运动规划</h2>
+                <h3>1.1 基于采样的运动规划</h3>
+                <h4>1.1.1 概率路线图法（PRM）及其扩展</h4><p><b>(1)核心研究</b>PRM*（渐进最优PRM）、LazyPRM、自适应PRM</p><p><b>(2)前沿方向</b>流形近似PRM用于约束运动规划</p><p><b>(3)最新进展</b>2025年研究将PRM应用于手术机器人在黎曼流形上的路径规划</p>
+                <h4>1.1.2 快速随机树（RRT）及其变体</h4><p><b>(1)核心算法</b>RRT、（渐进最优）、InformedRRT、BIT*（批处理信息树）</p><p><b>(2)前沿方向</b>双向RRT：基于样条的双向RT算法学习引导采样：RL-RRT通过强化学习策略学习可达性估计器狭窄通道优化：自适应RAT、NarrowPassageRRT等针对狭窄环境的改进</p>
+                <h4>1.1.3 最优采样规划理论</h4><p>研究渐进最优性与概率完整性的理论边界确定性采样方法与随机采样的对比研究</p>
+                <h3>1.2 基于搜索的运动规划</h3>
+                <h4>1.2.1 图搜索算法</h4><p>经典算法：Dijkstra、A、D、D*Lite（动态环境适应）现代扩展：任意角度路径规划、跳点搜索（JPS）、状态格点法（State Lattice）</p>
+                <h4>1.2.2 启发式搜索与元启发式算法</h4><p><b>(1)研究重点</b>：启发函数设计、可采纳启发式</p><p><b>(2)应用</b>：多旋翼集群在复杂冲突场景下的运动规划</p>
+                <h3>1.3 动力学约束运动规划</h3>
+                <h4>1.3.1 动力学与运动学约束规划</h4><p><b>(1)问题定义</b>同时满足运动学（避障）和动力学约束的最小时间轨迹规划</p><p><b>(2)核心算法</b>KPIECE、SST（稳定稀疏RRT）、运动原语（Motion Primitives）</p>
+                <h4>1.3.2 非完整约束规划</h4><p>针对差速驱动、阿克曼转向等非完整系统的专门算法；四足机器人复杂地形的运动-动力学协同优化（KinDynOpt）</p>
+                <h3>1.4 轨迹优化与最优控制</h3>
+                <h4>1.4.1 数值优化方法</h4><p>直接法：NLP、SQP；间接法：庞特里亚金极大值原理；双凸方法、稀疏半定松弛、序列凸优化（SCP）</p>
+                <h4>1.4.2 模型预测控制（MPC）在运动规划中的应用</h4><p>分支MPC、Transformer-based MPC（收敛速度提升75%）、应急规划（Contingency Planning）</p>
+                <h4>1.4.3 时间最优轨迹规划</h4><p>清华大学HLAW-SPLP框架；中山大学百公里级在线轨迹优化闭环制导飞行试验</p>
+                <h3>1.5 多机器人协同运动规划</h3>
+                <h4>1.5.1 多智能体路径寻找</h4><p>CBS、ECBS、PIBT算法</p>
+                <h4>1.5.2 MAPF前沿研究方向</h4><p>终身MAPF（L-MAPF）、窗口化MAPF、异构机器人MAPF、动态MAPF、暂态MAPF（T-MAPF）</p>
+                <h3>1.6 基于学习的运动规划</h3>
+                <h4>1.6.1 深度学习与神经网络规划</h4><p>MPNet使用神经网络学习通用最近最优启发式</p>
+                <h4>1.6.2 强化学习运动规划</h4><p>DQN、PPO、SAC等方法；元学习自适应规划；基于筛选-嫁接机制的通用DRL运动规划框架</p>
+                <h4>1.6.3 模仿学习</h4><p>从专家示范中学习策略，结合经典规划器的理论保证</p>
+                <h4>1.6.4 任务与运动协同规划（TAMP）</h4><p>整合高层任务规划与低层运动规划；LLM融合（AutoTAMP）；GPU并行规划</p>
+                <h3>1.7 约束运动规划</h3><h4>1.7.1 约束处理理论</h4><p>流形上的规划；基于算子学习的可泛化运动规划</p><h4>1.7.2 接触丰富型规划</h4><p>接触隐式规划；基于稀疏半定松弛的全局最优接触规划</p>
+                <h3>1.8 动态与不确定环境规划</h3>
+                <h4>1.8.1 动态障碍物避让</h4><p>速度障碍法（VO、RVO、ORCA）；Hamilton-Jacobi-Bellman可达性分析</p>
+                <h4>1.8.2 不确定性下的鲁棒规划</h4><p>鲁棒RRT；Wasserstein距离约束下的安全路径规划；POMDP规划</p>
+                <h3>1.9 语义与行为运动规划</h3><h4>1.9.1 语义动作规划</h4><p>行为规划：跟车、绕行、超车等</p><h4>1.9.2 社交感知规划</h4><p>人类行为预测与共享控制；意图识别</p>
+                <h3>1.10 特定平台运动规划</h3>
+                <h4>1.10.1 自动驾驶运动规划</h4><p>Frenet坐标系规划；结构化道路规划</p>
+                <h4>1.10.2 机械臂运动规划</h4><p>笛卡尔空间规划；关节空间规划；冗余机械臂零空间优化</p>
+                <h4>1.10.3 移动操作规划</h4><p>导航与操作协同规划</p>
+                <h4>1.10.4 无人机/飞行器规划</h4><p>变形无人机规划；集群规划</p>
+                <h3>1.11 新兴交叉方向</h3>
+                <h4>1.11.1 扩散模型规划</h4><p>灵活行为合成和轨迹生成</p>
+                <h4>1.11.2 大模型驱动的规划</h4><p>LLM+P；视觉-语言-动作（VLA）模型</p>
+            </div>
+            <div class="section-block">
+                <h2>2 控制理论应用</h2>
+                <h3>2.1 经典反馈控制</h3>
+                <h4>2.1.1 PID控制及其现代扩展</h4><p>计算力矩法；PD控制优化滑模控制增益矩阵</p>
+                <h4>2.1.2 前馈控制与扰动补偿</h4><p>前馈力-导纳控制；计算力矩法滑模鲁棒控制</p>
+                <h3>2.2 非线性控制</h3>
+                <h4>2.2.1 全驱与非线性系统控制</h4><p>反馈线性化；部分反馈线性化；反步法（Backstepping）</p>
+                <h4>2.2.2 滑模控制</h4><p>终端滑模控制（TSMC）；饱和函数替代符号函数抑制抖振；自适应滑模控制</p>
+                <h4>2.2.3 非光滑与混杂系统控制</h4><p>非光滑Lyapunov函数（NSLF）用于欠驱动系统全局稳定性分析</p>
+                <h3>2.3 鲁棒控制</h3>
+                <h4>2.3.1 H∞控制与μ综合方法</h4><p>H∞控制理论；自适应动态规划（ADP）求解H∞；μ综合方法（D-K迭代）</p>
+                <h4>2.3.2 自适应鲁棒控制</h4><p>期望补偿的ARC（DCARC）；虚拟分解控制（VDC）使能耗降低47%；神经自适应动态表面控制</p>
+                <h3>2.4 自适应控制</h3>
+                <h4>2.4.1 基于速度测量的模型参考自适应控制器</h4>
+                <h4>2.4.2 自适应输出力跟踪控制</h4><p>虚拟分解控制方案控制6自由度液压机械臂</p>
+                <h4>2.4.3 基于模型的自适应控制</h4><h4>2.4.4 基于数据的自适应控制</h4><h4>2.4.5 人工智能集成自适应控制</h4>
+                <h3>2.5 模型预测控制</h3>
+                <h4>2.5.1 MPC理论体系与变体</h4><p>线性MPC、非线性MPC（NMPC）、线性时变MPC（LTV-MPC）、鲁棒MPC、随机MPC（SMPC）、分布式MPC（DMPC）</p>
+                <h4>2.5.2 MPC在机器人中的前沿应用</h4><p>Cafe-MPC框架；人形机器人步态生成；Transformer-based MPC（收敛速度提升75%）</p>
+                <h3>2.6 力与交互控制</h3>
+                <h4>2.6.1 阻抗控制与导纳控制</h4><p>阻抗控制；导纳控制；混合位置/力控制；变阻抗/导纳控制</p>
+                <h4>2.6.2 力位混合控制优化</h4><h4>2.6.3 基于粘弹性模型的接触力/力矩控制</h4>
+                <h3>2.7 视觉伺服控制</h3>
+                <h4>2.7.1 视觉伺服基础方法</h4><p>IBVS、PBVS、混合视觉伺服、直接视觉伺服（丁汉院士团队，IJRR）</p>
+                <h4>2.7.2 视觉伺服前沿</h4><p>无标定视觉伺服；动态视觉伺服；光度视觉伺服；互信息视觉伺服；核函数视觉伺服</p>
+                <h3>2.8 智能控制与机器学习控制</h3>
+                <h4>2.8.1 神经网络控制</h4><p>CMAC网络；RBF神经网络；BP神经网络-模糊控制结合</p>
+                <h4>2.8.2 模糊控制与模糊神经网络</h4><p>模糊强化学习（FRL）；自适应分布式模糊PD控制器</p>
+                <h4>2.8.3 强化学习控制</h4><p>深度强化学习（DRL）；Actor-Critic方法；行为基础模型（BFM）</p>
+                <h3>2.9 全身控制</h3><p>2.9.1 WBC控制架构 | 2.9.2 HWC-Loco分层全身控制 | 2.9.3 MPC与WBC融合 | 2.9.4 Humanoid-VLA</p>
+                <h3>2.10 欠驱动系统控制</h3><p>能量（无源）方法 | 运动规划法 | 部分反馈线性化 | 分级控制设计 | WCLF | NSLF | 欠驱动机械臂 | 人形机器人</p>
+                <h3>2.11 分布式与协同控制</h3><p>2.11.1 分布式协同控制 | 2.11.2 分布式模型预测控制（DMPC） | 2.11.3 分层感知增强分布式多机器人运动规划</p>
+            </div>
+            <div class="section-block">
+                <h2>3 人工智能与学习</h2>
+                <h3>3.1 强化学习</h3>
+                <h4>3.1.1 深度强化学习</h4><p>DQN、DDPG、TD3、SAC、PPO、TRPO</p>
+                <h4>3.1.2 分层强化学习</h4><p>课程学习；选项框架；元控制器-子控制器架构</p>
+                <h4>3.1.3 离线强化学习</h4><p>Q-Transformer通过自回归Q函数实现稳定离线RL</p>
+                <h4>3.1.4 世界模型强化学习</h4><p>DayDreamer利用世界模型进行物理机器人学习</p>
+                <h4>3.1.5 多智能体强化学习</h4>
+                <h3>3.2 模仿学习</h3>
+                <h4>3.2.1 行为克隆</h4><p>DAgger算法缓解分布偏移</p>
+                <h4>3.2.2 逆强化学习</h4><p>最大熵IRL；GAIL；DiffAIL</p>
+                <h4>3.2.3 隐式模仿学习</h4><p>DIQN将隐式模仿与DQN结合</p>
+                <h4>3.2.4 模仿学习前沿</h4><p>MimicPlay分层框架；TextGAIL；最优传输度量</p>
+                <h3>3.3 基础模型与具身智能</h3>
+                <h4>3.3.1 VLM模型</h4><h4>3.3.2 VLA模型架构</h4><p>RT系列；GROOT N1（220亿参数）；π0；Octopus；4D-VLA；ST-VLA</p>
+                <h4>3.3.3 多模态扩展</h4><p>VTA；VLAS；FuSe</p>
+                <h3>3.4 扩散模型在机器人中的应用</h3>
+                <h4>3.4.1 扩散策略</h4><p>NeurIPS 2023最佳论文Diffusion Policy</p>
+                <h4>3.4.2 具体应用</h4><p>3D Diffusion Policy；RDT-1B；DIPS</p>
+                <h4>3.4.3 优化方向</h4><p>RTI-DP（效率提高28倍）；Falcon；Streaming Diffusion Policy；PolyTouch；Reactive Diffusion Policy</p>
+                <h3>3.5 世界模型学习</h3><p>DayDreamer；RSSM；A1四足机器人1小时内学会行走；UR5和XArm在8-10小时内学习视觉抓取</p>
+                <h4>3.5.1 潜空间预测</h4><h4>3.5.2 多模态融合</h4><h4>3.5.3 自监督训练</h4>
+                <h3>3.6 元学习</h3>
+                <h4>3.6.1 学会学习</h4><h4>3.6.2 MAML</h4><h4>3.6.3 Reptile</h4><h4>3.6.4 RL²</h4><h4>3.6.5 进化策略元学习</h4>
+                <h4>3.6.6 快速自适应运动</h4><p>四足机器人0.2秒内在线适应</p>
+                <h4>3.6.7 投掷任务适应</h4><h4>3.6.8 DrEureka</h4>
+                <h3>3.7 自监督学习</h3>
+                <h4>3.7.1 对比学习</h4><h4>3.7.2 信息最大化方法</h4><h4>3.7.3 非对比学习</h4>
+                <h4>3.7.4 地形表示学习</h4><p>STERLING；VertiCoder（参数量减少77%）；BarlowWalk</p>
+                <h4>3.7.5 视觉状态表示学习</h4>
+                <h3>3.8 终身学习与持续学习</h3>
+                <h4>3.8.1 终身强化学习</h4><p>LEGION框架（2025年Nature Machine Intelligence）</p>
+                <h4>3.8.2 扩散模型融合</h4><h4>3.8.3 动态知识扩展</h4>
+                <h3>3.9 生成式AI与机器人</h3><p>任务规划 | 代码生成 | 知识检索 | 人机交互 | 视频生成世界模型 | 3D场景生成 | 数据合成</p>
+                <h3>3.10 迁移学习与域适应</h3>
+                <h4>3.10.1 仿真到现实迁移（Sim-to-Real Transfer）</h4><p>域随机化；域适应；系统辨识</p>
+                <h4>3.10.2 跨本体迁移</h4>
+                <h3>3.11 少样本与零样本学习</h3>
+                <h4>3.11.1 少样本学习</h4><p>一次性模仿学习；MIL算法</p>
+                <h4>3.11.2 零样本学习</h4><p>语言条件策略；视觉语言导航</p>
+                <h3>3.12 在线学习与自适应学习</h3><h4>3.12.1 在线学习</h4><h4>3.12.2 自适应机制</h4>
+                <h3>3.13 可解释学习</h3><p>注意力可视化 | 因果解释 | 安全约束学习</p>
+            </div>
+            <div class="section-block">
+                <h2>4 认知与推理</h2>
+                <h3>4.1 形式化任务规划与推理</h3>
+                <h4>4.1.1 时序逻辑任务规划</h4><p>线性时序逻辑（LTL）；Büchi自动机转换；信号时序逻辑（STL）；能力时序逻辑（CaTL）</p>
+                <h4>4.1.2 形式化方法前沿方向</h4><p>反应式任务规划；滚动时域规划；分层任务规划；约束优化方法；概率采样方法</p>
+                <h3>4.2 知识图谱与本体推理</h3>
+                <h4>4.2.1 知识图谱构建与推理</h4><p>多层级知识图谱；两阶段推理框架；可供性推理；人机协作认知</p>
+                <h4>4.2.2 本体论与语义推理</h4><p>SUMO上层本体；CORA机器人核心本体；描述逻辑推理</p>
+                <h3>4.3 认知架构</h3>
+                <h4>4.3.1 经典认知架构</h4><p>SOAR；ACT-R；CLARION</p>
+                <h4>4.3.2 现代认知架构</h4><p>DIARC；OntoAgent；HARMONIC</p>
+                <h3>4.4 因果推理</h3><p>J-PCMCI+算法；结构因果模型（SCM）；反事实推理；动态人机共享环境决策</p>
+            </div>
+        `;
+
+        // ---- 页面4：交互与协同系统（简要骨架） ----
+        pageContents['page-4'] = `
+            <button class="back-to-home" onclick="navigateTo('page-home','首页')">← 返回首页</button>
+            <div class="section-block"><h2>四、交互与协同系统</h2></div>
+            <div class="section-block">
+                <h2>1 人机交互 (HRI)</h2>
+                <h3>1.1 多模态交互</h3>
+                <h4>1.1.1 多模态感知与融合</h4><p>核心定义：机器人同时接收并融合视觉、听觉、触觉、文本等多种通道信息。技术实现：输入感知模块→特征提取模块→多模态融合模块→决策与响应模块</p>
+                <h4>1.1.2 具身交互（Embodied Interaction）</h4><p>智能体在物理或模拟空间与人类、环境交互，典型任务如具身问题解答（EQA）</p>
+                <h4>1.1.3 共享认知交互</h4><p>通过多模态线索、增强现实技术和共享认知机制实现知识和价值对齐</p>
+                <h3>1.2 社交机器人与情感计算</h3>
+                <h4>1.2.1 情感计算引擎</h4><p>感知系统→情感识别→情感生成→情感调节。代表系统：智元机器人灵犀X2</p>
+                <h4>1.2.2 社交机器人设计</h4>
+                <h3>1.3 手势识别与交互</h3>
+                <h4>1.3.1 基于视觉的手势识别</h4><p>全身手势识别；超范围手势识别（URGR，识别率98.1%）；时空融合网络（TSFN）</p>
+                <h4>1.3.2 多模态手势融合</h4><p>融合人体感知和多模态手势；基于IMU的连续手势识别；肌电信号手势识别</p>
+                <h4>1.3.3 手势交互应用</h4><p>水下视觉手势识别（U-HRI）；手术机器人手势控制</p>
+                <h3>1.4 意图识别与预测</h3>
+                <h4>1.4.1 神经网络驱动意图识别</h4><p>CNN-Transformer模型实现近乎完美的精确率、召回率和F1分数</p>
+                <h4>1.4.2 意图推断与投影</h4><p>量化意图预测不确定性；创建抗误解控制策略</p>
+                <h3>1.5 眼动与注视交互</h3><p>GazeGuide系统；非穿戴自然人机交互；EnchantingEyes拟人化视线控制；手术机器人眼动控制</p>
+                <h3>1.6 语音与自然语言交互</h3><p>ASR→TTS→NLU；大语言模型集成（AstrBot框架）；支持多种大语言模型</p>
+                <h3>1.7 协作控制与共享控制</h3>
+                <h4>1.7.1 人机协作框架</h4><p>协作与共享自主性原则；物理和认知交互安全框架</p>
+                <h4>1.7.2 协作学习</h4><p>自适应学习；演示学习（LfD）；反馈建模</p>
+                <h3>1.8 具身交互与沉浸式交互</h3>
+                <h4>1.8.1 具身智能交互</h4><p>具身问题解答（EQA）；具身空中物理交互（E-APhI）</p>
+                <h4>1.8.2 沉浸式交互技术</h4><p>VR驱动；AR辅助；MR交互</p>
+                <h3>1.9 触觉与力反馈交互</h3>
+                <h4>1.9.1 触觉传感器集成</h4><p>"视觉-触觉-动作"闭环</p>
+                <h4>1.9.2 力反馈控制</h4><h4>1.9.3 触觉渲染</h4>
+                <h3>1.10 脑机接口交互</h3>
+                <h4>1.10.1 神经信号采集</h4><h4>1.10.2 意图解码</h4><h4>1.10.3 共享控制融合</h4>
+            </div>
+            <div class="section-block">
+                <h2>2 多机器人协同</h2>
+                <h3>2.1 群体机器人学</h3><p>群体机器人基础理论；自组织、涌现行为、自组装；应用：军事侦察、空间探索、编队飞行</p>
+                <h3>2.2 编队控制</h3>
+                <h4>2.2.1 编队控制基础方法</h4><p>领导者-跟随者；虚拟结构；基于行为；人工势场法</p>
+                <h4>2.2.2 编队控制方法</h4><p>Backstepping方法；滑模变结构控制（SMC）；分数阶控制；混合编队控制</p>
+                <h4>2.2.3 复杂环境下的编队控制</h4><p>三维地形环境；嵌套运动饱和约束；状态切换机制</p>
+                <h3>2.3 多智能体路径规划</h3>
+                <h4>2.3.1 MAPF基础算法</h4><p>CBS；基于优先级的方法；分布式方法</p>
+                <h4>2.3.2 大规模MAPF</h4><h4>2.3.3 未知延迟下的鲁棒MAPF</h4><p>上海交通大学陈卫东教授团队提出基于路径协调的方法</p>
+                <h4>2.3.4 异构机器人MAPF</h4>
+                <h3>2.4 分布式控制与一致性控制</h3>
+                <h4>2.4.1 分布式控制架构</h4><p>完全分布式；半集中式控制</p>
+                <h4>2.4.2 一致性控制</h4><p>运动一致性；目标一致性</p>
+                <h4>2.4.3 分布式事件触发控制</h4><p>事件触发机制；通信延迟下的安全控制（DCBF+GNN）</p>
+                <h3>2.5 任务分配与协同</h3>
+                <h4>2.5.1 协同小组分配</h4><p>基于纳什均衡策略</p>
+                <h4>2.5.2 动态联盟形成</h4><p>强化学习解决ST-MR-TA问题</p>
+                <h4>2.5.3 GT-MRTA</h4><p>基于博弈论的任务分配算法</p>
+                <h3>2.6 协同感知</h3><p>感知性能提高超过200%</p>
+                <h4>2.6.1 变分稀疏高斯过程</h4><h4>2.6.2 多模态数据融合</h4>
+                <h3>2.7 大语言模型与多机器人协同</h3>
+                <h4>2.7.1 LLM驱动的任务规划</h4><p>LaMMA-P框架（任务成功率提高105%）；LLM-MCoX框架（探索时间快22.7%）</p>
+                <h4>2.7.2 LLM驱动的协调与通信</h4><p>DEXTER-LLM；CommCP；EMOS系统</p>
+                <h3>2.8 协同操作</h3><p>多机械臂协同 | 协同抓取 | 装配任务 | 多机器人搬运 | 编队搬运 | 动态负载分配</p>
+                <h3>2.9 异构多机器人系统</h3><p>空地协同；LLM-MCoX协调异构团队；DEXTER-LLM工业紧急情况处理</p>
+                <h3>2.10 通信与网络</h3>
+                <h4>2.10.1 多机器人通信</h4><p>本地通信；通信拓扑约束；通信延迟处理</p>
+                <h4>2.10.2 网络化控制</h4><p>无线网络通信；Age-of-Information（AoI）</p>
+                <h3>2.11 安全与鲁棒性</h3>
+                <h4>2.11.1 安全控制</h4><p>DCBF；死锁处理（IDG）</p>
+                <h4>2.11.2 鲁棒性保障</h4><p>容错控制；适应性；不确定性处理</p>
+                <h3>2.12 强化学习与多机器人系统</h3><p>VDN | 注意力机制 | 图神经网络 | 动态联盟形成 | 去中心化学习</p>
+                <h3>2.13 人机协同与共享控制</h3><p>人机协同推理；共享控制；意图识别</p>
+                <h3>2.14 仿真与数字孪生</h3><p>PyBullet；Gazebo；数字孪生虚实结合</p>
+            </div>
+            <div class="section-block">
+                <h2>3 机器人-环境交互</h2>
+                <h3>3.1 可供性学习</h3>
+                <h4>3.1.1 视觉可供性学习</h4><p>端到端可供性强化学习框架；视觉运动可供性学习（VAL）</p>
+                <h4>3.1.2 接触预测与可供性</h4><p>接触预测器（CP）；动态真值（DGT）；可供性奖励</p>
+                <h4>3.1.3 可供性前沿</h4><p>Robo-ABC零样本泛化；CoPa框架利用大规模预训练模型</p>
+                <h3>3.2 接触丰富操作</h3>
+                <h4>3.2.1 隐式运动适应（IMA）</h4>
+                <h4>3.2.2 慢-快层次化视觉触觉模仿学习（RDP）</h4>
+                <h4>3.2.3 全身接触丰富操作（WBCRM）</h4>
+                <h3>3.3 地形适应与环境交互</h3>
+                <h4>3.3.1 复杂地形适应技术</h4><p>四足机器人地形感知和刚度自适应控制；六足机器人分层强化学习（参数减少67%）</p>
+                <h4>3.3.2 软地形适应</h4><p>STANCE算法</p>
+                <h4>3.3.3 仿生软体地形适应</h4><p>VBASL适应42°陡坡等五种以上复杂地形</p>
+                <h3>3.4 物理交互动力学建模</h3>
+                <h4>3.4.1 物理信息神经网络（PINN）</h4><p>将偏微分方程作为软约束嵌入神经网络损失函数</p>
+                <h4>3.4.2 阻抗与顺应性控制</h4><p>迭代最优阻抗控制；刚度自适应控制</p>
+                <h3>3.5 主动感知</h3>
+                <h4>3.5.1 ActiveVLA框架</h4><p>"由粗到精"的主动感知框架</p>
+                <h4>3.5.2 Vision in Action (ViA)</h4><p>6自由度机械颈实现类人头部移动</p>
+                <h3>3.6 仿真到现实迁移（Sim2Real Transfer）</h3>
+                <h4>3.6.1 域随机化</h4><h4>3.6.2 系统辨识与校准</h4><h4>3.6.3 渐进式迁移学习</h4>
+                <h4>3.6.4 对抗性训练</h4><h4>3.6.5 多模态感知融合</h4>
+                <h4>3.6.6 ASAP</h4><p>DeltaAction模型学习仿真与现实之间的动作差异</p>
+                <h4>3.6.7 AMP+PPO组合</h4><h4>3.6.8 RainyGS技术</h4><h4>3.6.9 高斯溅射在Sim2Real中的应用</h4><p>SplatSim；RobogSim；PIN-WM</p>
+                <h3>3.7 环境理解与场景理解</h3>
+                <h4>3.7.1 多模态环境感知</h4><h4>3.7.2 3D场景表示</h4><p>NeRF、3D高斯溅射</p><h4>3.7.3 语义场景理解</h4>
+                <h3>3.8 物理推理与预测</h3>
+                <h4>3.8.1 物理推理</h4><p>直觉物理；物理约束学习</p><h4>3.8.2 环境预测</h4><p>世界模型；接触预测</p>
+                <h3>3.9 自适应与学习交互</h3>
+                <h4>3.9.1 在线适应</h4><h4>3.9.2 强化学习交互</h4><h4>3.9.3 元学习适应</h4><h4>3.9.4 持续学习</h4>
+                <h3>3.10 数字孪生与虚拟交互</h3>
+                <h4>3.10.1 数字孪生技术</h4><p>实时数字孪生；预测性维护</p>
+                <h4>3.10.4 虚拟交互训练</h4><p>虚拟环境训练；虚实融合</p>
+            </div>
+        `;
+
+        // ==================== 导航逻辑 ====================
+        let currentPage = 'page-home';
+
+        function navigateTo(pageId, pageTitle) {
+            currentPage = pageId;
+            // 隐藏所有页面
+            document.querySelectorAll('#mainContent > div').forEach(div => {
+                div.style.display = 'none';
+            });
+            // 显示目标页面
+            const targetDiv = document.getElementById(pageId);
+            if (targetDiv) {
+                targetDiv.style.display = 'block';
+                // 如果跳转到子页面，填充内容
+                if (pageId !== 'page-home' && pageContents[pageId]) {
+                    targetDiv.innerHTML = pageContents[pageId];
+                }
+            }
+            // 更新面包屑
+            const breadcrumb = document.getElementById('breadcrumb');
+            if (pageId === 'page-home') {
+                breadcrumb.innerHTML = '<span class="current">首页</span>';
+                document.getElementById('mainContent').classList.add('full-width');
+                document.getElementById('sidebar').classList.add('hidden');
+            } else {
+                breadcrumb.innerHTML =
+                    '<a onclick="navigateTo(\'page-home\',\'首页\')">首页</a> <span class="sep">›</span> <span class="current">' +
+                    pageTitle + '</span>';
+                document.getElementById('mainContent').classList.remove('full-width');
+                document.getElementById('sidebar').classList.remove('hidden');
+                document.getElementById('sidebarTitle').textContent = pageTitle;
+                // 重建侧边栏
+                buildSidebarForPage(pageId);
+            }
+            // 滚动到顶部
+            document.getElementById('mainContent').scrollTop = 0;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            // 更新URL hash
+            window.location.hash = pageId;
+        }
+
+        function buildSidebarForPage(pageId) {
+            const nav = document.getElementById('sidebarNav');
+            nav.innerHTML = '';
+            const container = document.getElementById(pageId);
+            if (!container) return;
+            // 等待内容渲染
+            setTimeout(() => {
+                const headings = container.querySelectorAll('h2, h3, h4');
+                headings.forEach((h, index) => {
+                    const text = h.textContent.trim();
+                    const tag = h.tagName.toLowerCase();
+                    let levelClass = 'level-h4';
+                    if (tag === 'h2') levelClass = 'level-h2';
+                    else if (tag === 'h3') levelClass = 'level-h3';
+                    // 确保有id
+                    if (!h.id) {
+                        h.id = 'sub-' + pageId + '-' + index;
+                    }
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.textContent = text;
+                    a.href = '#' + h.id;
+                    a.className = levelClass;
+                    a.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        document.getElementById(h.id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        nav.querySelectorAll('a').forEach(el => el.classList.remove('active-nav'));
+                        a.classList.add('active-nav');
+                    });
+                    li.appendChild(a);
+                    nav.appendChild(li);
+                });
+            }, 100);
+        }
+
+        // Logo点击返回首页
+        document.getElementById('logoLink').addEventListener('click', function() {
+            navigateTo('page-home', '首页');
+        });
+
+        // 侧边栏切换按钮
+        document.getElementById('menuToggle').addEventListener('click', function() {
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar.classList.contains('hidden')) return;
+            sidebar.classList.toggle('collapsed');
+        });
+
+        // 处理浏览器前进/后退
+        window.addEventListener('hashchange', function() {
+            const hash = window.location.hash.replace('#', '');
+            if (hash && (hash === 'page-home' || hash === 'page-1' || hash === 'page-2' || hash === 'page-3' ||
+                    hash === 'page-4')) {
+                const titles = {
+                    'page-home': '首页',
+                    'page-1': '一、机械结构与硬件系统',
+                    'page-2': '二、感知系统',
+                    'page-3': '三、决策与控制系统',
+                    'page-4': '四、交互与协同系统'
+                };
+                navigateTo(hash, titles[hash] || '');
+            }
+        });
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            const hash = window.location.hash.replace('#', '');
+            if (hash && (hash === 'page-1' || hash === 'page-2' || hash === 'page-3' || hash === 'page-4')) {
+                const titles = {
+                    'page-1': '一、机械结构与硬件系统',
+                    'page-2': '二、感知系统',
+                    'page-3': '三、决策与控制系统',
+                    'page-4': '四、交互与协同系统'
+                };
+                navigateTo(hash, titles[hash] || '');
+            } else {
+                navigateTo('page-home', '首页');
+            }
+        });
+    </script>
+</body>
+</html>
