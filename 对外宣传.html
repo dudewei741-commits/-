@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="双臂灵巧手机器人学术科研知识体系可视化" />
+  <title>双臂灵巧手机器人学术科研</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.cn" />
+  <link rel="preconnect" href="https://fonts.gstatic.cn" crossorigin />
+  <link href="https://fonts.googleapis.cn/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Noto Sans SC', 'Inter', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f0f4ff',
+              100: '#dbe4ff',
+              200: '#bac8ff',
+              300: '#91a7ff',
+              400: '#748ffc',
+              500: '#5c7cfa',
+              600: '#4c6ef5',
+              700: '#4263eb',
+              800: '#3b5bdb',
+              900: '#364fc7',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* 基础样式 */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Noto Sans SC', 'Inter', sans-serif; overflow-x: hidden; }
+
+    /* 滚动条美化 */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 3px; }
+    .dark ::-webkit-scrollbar-thumb { background: #475569; }
+
+    /* 淡入动画 */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* 渐变文字 */
+    .gradient-text {
+      background: linear-gradient(135deg, #4263eb, #7c3aed, #06b6d4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .dark .gradient-text {
+      background: linear-gradient(135deg, #748ffc, #a78bfa, #22d3ee);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* 卡片悬停效果 */
+    .card-hover {
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+    .card-hover:hover {
+      transform: translateY(-4px);
+    }
+
+    /* 导航高亮 */
+    .nav-link {
+      position: relative;
+      transition: color 0.2s ease;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #4263eb;
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after,
+    .nav-link.active::after {
+      width: 100%;
+    }
+
+    /* 脉冲动画 */
+    @keyframes pulse-slow {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 0.8; }
+    }
+    .animate-pulse-slow { animation: pulse-slow 4s ease-in-out infinite; }
+
+    /* 网格背景 */
+    .grid-bg {
+      background-image:
+        linear-gradient(rgba(66, 99, 235, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(66, 99, 235, 0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .dark .grid-bg {
+      background-image:
+        linear-gradient(rgba(116, 143, 252, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(116, 143, 252, 0.06) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    /* 标签样式 */
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 10px;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    /* 进度条动画 */
+    .progress-bar {
+      transition: width 1.2s ease-out;
+    }
+
+    /* 手风琴动画 */
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease-out, padding 0.3s ease;
+    }
+    .accordion-content.open {
+      max-height: 2000px;
+    }
+
+    /* 返回顶部按钮 */
+    .back-to-top {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .back-to-top.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* 移动端导航 */
+    .mobile-nav {
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+    }
+    .mobile-nav.open {
+      transform: translateX(0);
+    }
+
+    /* 连接线 */
+    .connector-line {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, #4263eb, #7c3aed);
+      opacity: 0.2;
+    }
+  </style>
+</head>
+<body class="bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100 grid-bg">
+  <!-- 导航栏 -->
+  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white/80 dark:bg-gray-950/80 backdrop-blur-xl border-b border-gray-200/50 dark:border-gray-800/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <!-- Logo -->
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-600 to-purple-600 flex items-center justify-center">
+            <i class="fa-solid fa-robot text-white text-sm"></i>
+          </div>
+          <span class="font-semibold text-lg hidden sm:block">双臂灵巧手机器人</span>
+        </div>
+        <!-- 桌面端导航 -->
+        <div class="hidden md:flex items-center gap-6 text-sm">
+          <a href="#overview" class="nav-link text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400">总览</a>
+          <a href="#structure" class="nav-link text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400">机械结构</a>
+          <a href="#actuation" class="nav-link text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400">驱动系统</a>
+          <a href="#integration" class="nav-link text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400">硬件集成</a>
+          <a href="#frontier" class="nav-link text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400">前沿趋势</a>
+        </div>
+        <!-- 右侧操作 -->
+        <div class="flex items-center gap-3">
+          <!-- 深色模式切换 -->
+          <button id="themeToggle" class="w-9 h-9 rounded-lg border border-gray-200 dark:border-gray-700 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" aria-label="切换主题">
+            <i class="fa-solid fa-moon text-sm dark:hidden"></i>
+            <i class="fa-solid fa-sun text-sm hidden dark:inline"></i>
+          </button>
+          <!-- 移动端菜单 -->
+          <button id="mobileMenuBtn" class="md:hidden w-9 h-9 rounded-lg border border-gray-200 dark:border-gray-700 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" aria-label="菜单">
+            <i class="fa-solid fa-bars text-sm"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 移动端导航面板 -->
+  <div id="mobileNav" class="mobile-nav fixed top-0 right-0 bottom-0 w-72 z-50 bg-white dark:bg-gray-900 shadow-2xl p-6 pt-20">
+    <button id="closeMobileNav" class="absolute top-5 right-5 w-8 h-8 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center justify-center">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    <div class="flex flex-col gap-4 text-base">
+      <a href="#overview" class="mobile-nav-link py-2 text-gray-700 dark:text-gray-300 hover:text-brand-600 dark:hover:text-brand-400">总览</a>
+      <a href="#structure" class="mobile-nav-link py-2 text-gray-700 dark:text-gray-300 hover:text-brand-600 dark:hover:text-brand-400">机械结构</a>
+      <a href="#actuation" class="mobile-nav-link py-2 text-gray-700 dark:text-gray-300 hover:text-brand-600 dark:hover:text-brand-400">驱动系统</a>
+      <a href="#integration" class="mobile-nav-link py-2 text-gray-700 dark:text-gray-300 hover:text-brand-600 dark:hover:text-brand-400">硬件集成</a>
+      <a href="#frontier" class="mobile-nav-link py-2 text-gray-700 dark:text-gray-300 hover:text-brand-600 dark:hover:text-brand-400">前沿趋势</a>
+    </div>
+  </div>
+  <div id="mobileOverlay" class="fixed inset-0 z-40 bg-black/30 hidden"></div>
+
+  <!-- Hero 区域 -->
+  <header class="relative pt-28 pb-20 px-4 overflow-hidden">
+    <!-- 装饰元素 -->
+    <div class="absolute top-20 left-10 w-72 h-72 bg-brand-400/10 rounded-full blur-3xl animate-pulse-slow"></div>
+    <div class="absolute bottom-10 right-10 w-96 h-96 bg-purple-400/10 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 2s;"></div>
+
+    <div class="max-w-5xl mx-auto text-center relative z-10">
+      <div class="fade-up">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-50 dark:bg-brand-900/30 text-brand-700 dark:text-brand-300 text-sm font-medium mb-6">
+          <i class="fa-solid fa-microscope"></i>
+          <span>学术科研知识体系</span>
+        </div>
+      </div>
+      <h1 class="fade-up text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6">
+        <span class="gradient-text">双臂灵巧手机器人</span>
+        <br />
+        <span class="text-gray-800 dark:text-gray-100">学术科研全景</span>
+      </h1>
+      <p class="fade-up text-lg sm:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed mb-10">
+        系统梳理双臂灵巧手机器人领域从机械结构、驱动致动到硬件集成的完整学术研究脉络，<br class="hidden sm:inline"/>涵盖前沿热点、跨学科融合与代表研究成果
+      </p>
+      <div class="fade-up flex flex-wrap items-center justify-center gap-4">
+        <a href="#overview" class="inline-flex items-center gap-2 px-6 py-3 bg-brand-600 hover:bg-brand-700 text-white rounded-xl font-medium transition-all hover:scale-105 hover:shadow-lg hover:shadow-brand-600/20">
+          <span>探索知识体系</span>
+          <i class="fa-solid fa-arrow-down text-sm"></i>
+        </a>
+        <a href="#frontier" class="inline-flex items-center gap-2 px-6 py-3 border border-gray-300 dark:border-gray-700 rounded-xl font-medium hover:bg-gray-50 dark:hover:bg-gray-800 transition-all hover:scale-105">
+          <span>前沿趋势</span>
+          <i class="fa-solid fa-bolt text-sm text-yellow-500"></i>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 总览区域 -->
+  <section id="overview" class="py-20 px-4">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-16 fade-up">
+        <h2 class="text-3xl sm:text-4xl font-bold mb-4">研究领域总览</h2>
+        <p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">三大核心方向，构建双臂灵巧手机器人完整学术研究框架</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+        <!-- 卡片1：机械结构 -->
+        <a href="#structure" class="fade-up card-hover group block p-8 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 hover:border-brand-300 dark:hover:border-brand-700 hover:shadow-xl hover:shadow-brand-500/5">
+          <div class="w-14 h-14 rounded-xl bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-gears text-2xl text-blue-600 dark:text-blue-400"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-3 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">机械结构与硬件系统</h3>
+          <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-4">涵盖机构设计、轻量化优化、仿生结构三大分支，解决机器人运动形态与结构性能的核心问题</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="tag bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300">机构构型</span>
+            <span class="tag bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300">拓扑优化</span>
+            <span class="tag bg-cyan-50 dark:bg-cyan-900/20 text-cyan-700 dark:text-cyan-300">仿生设计</span>
+          </div>
+        </a>
+        <!-- 卡片2：驱动系统 -->
+        <a href="#actuation" class="fade-up card-hover group block p-8 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 hover:border-brand-300 dark:hover:border-brand-700 hover:shadow-xl hover:shadow-brand-500/5" style="transition-delay: 0.1s;">
+          <div class="w-14 h-14 rounded-xl bg-orange-50 dark:bg-orange-900/30 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-bolt text-2xl text-orange-600 dark:text-orange-400"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-3 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">驱动与致动系统</h3>
+          <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-4">从传统电气流体驱动到智能材料、仿生肌肉致动，再到微纳尺度与自供能技术，全面覆盖驱动前沿</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="tag bg-orange-50 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300">智能材料</span>
+            <span class="tag bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300">仿生致动</span>
+            <span class="tag bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300">微纳驱动</span>
+          </div>
+        </a>
+        <!-- 卡片3：硬件集成 -->
+        <a href="#integration" class="fade-up card-hover group block p-8 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 hover:border-brand-300 dark:hover:border-brand-700 hover:shadow-xl hover:shadow-brand-500/5" style="transition-delay: 0.2s;">
+          <div class="w-14 h-14 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-microchip text-2xl text-emerald-600 dark:text-emerald-400"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-3 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">硬件集成与可靠性</h3>
+          <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-4">系统集成设计、可靠性保障与故障容错，确保双臂灵巧手机器人在实际应用中的稳定运行</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="tag bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300">系统集成</span>
+            <span class="tag bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-300">可靠性</span>
+            <span class="tag bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-300">容错控制</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- 关键数据展示 -->
+      <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 fade-up">
+        <div class="text-center p-6 rounded-2xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800">
+          <div class="text-3xl font-bold gradient-text mb-1">6</div>
+          <div class="text-sm text-gray-500 dark:text-gray-400">核心研究领域</div>
+        </div>
+        <div class="text-center p-6 rounded-2xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800">
+          <div class="text-3xl font-bold gradient-text mb-1">18+</div>
+          <div class="text-sm text-gray-500 dark:text-gray-400">研究子方向</div>
+        </div>
+        <div class="text-center p-6 rounded-2xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800">
+          <div class="text-3xl font-bold gradient-text mb-1">30+</div>
+          <div class="text-sm text-gray-500 dark:text-gray-400">前沿学术热点</div>
+        </div>
+        <div class="text-center p-6 rounded-2xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800">
+          <div class="text-3xl font-bold gradient-text mb-1">5</div>
+          <div class="text-sm text-gray-500 dark:text-gray-400">跨学科融合方向</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 第一大部分：机械结构与硬件系统 -->
+  <section id="structure" class="py-20 px-4 bg-gray-50/50 dark:bg-gray-900/50">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-16 fade-up">
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 text-xs font-semibold mb-4">
+          <i class="fa-solid fa-gears"></i>
+          <span>PART 01</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-bold mb-4">机械结构与硬件系统</h2>
+        <p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">解决机器人运动形态、结构性能与生物启发设计的核心理论问题</p>
+      </div>
+
+      <!-- 1.1 机械结构设计 -->
+      <div class="mb-16 fade-up">
+        <div class="flex items-center gap-3 mb-8">
+          <div class="w-10 h-10 rounded-lg bg-brand-600 text-white flex items-center justify-center font-bold text-sm">1.1</div>
+          <h3 class="text-2xl font-bold">机械结构设计</h3>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- 机构拓扑与自由度综合 -->
+          <div class="card-hover rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+            <div class="flex items-start gap-4 mb-4">
+              <div class="w-10 h-10 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-diagram-project text-indigo-600 dark:text-indigo-400"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-lg mb-1">机构拓扑与自由度综合</h4>
+                <span class="tag bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 mb-2">构型设计源头</span>
+              </div>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-4">基于旋量理论、李群李代数、图论等数学工具，开展串联/并联/混联机构的型综合、数综合、自由度分析，设计满足特定运动需求的机构构型。</p>
+            <div class="space-y-2 mb-4">
+              <div class="flex items-start gap-2 text-sm">
+                <i class="fa-solid fa-fire text-orange-500 mt-0.5 shrink-0"></i>
+                <span class="text-gray-700 dark:text-gray-300">少自由度并联机构完整构型综合理论</span>
+              </div>
+              <div class="flex items-start gap-2 text-sm">
+                <i class="fa-solid fa-fire text-orange-500 mt-0.5 shrink-0"></i>
+                <span class="text-gray-700 dark:text-gray-300">混联机构构型创新（人形机器人混联踝关节等）</span>
+              </div>
+              <div class="flex items-start gap-2 text-sm">
+                <i class="fa-solid fa-fire text-orange-500 mt-0.5 shrink-0"></i>
+                <span class="text-gray-700 dark:text-gray-300">基于生成式AI的机构构型自动综合</span>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-2 text-xs">
+              <span class="tag bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400"><i class="fa-solid fa-arrows-rotate mr-1"></i>机械 x 数学</span>
+              <span class="tag bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400"><i class="fa-solid fa-robot mr-1"></i>机械 x AI</span>
+            </div>
+            <div class="mt-3 pt-3 border-t border-gray-100 dark:border-gray-800 text-xs text-gray-500 dark:text-gray-500">
+              <i class="fa-solid fa-graduation-cap mr-1"></i>清华大学·混联加工机器人 | MIT·人形机器人并联关节 | <em>Mechanism and Machine Theory</em> · ICRA/IROS
+            </div>
+          </div>
+
+          <!-- 变胞/可重构机构理论 -->
+          <div class="card-hover rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+            <div class="flex items-start gap-4 mb-4">
+              <div class="w-10 h-10 rounded-lg bg-violet-50 dark:bg-violet-900/30 flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-recycle text-violet-600 dark:text-violet-400"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-lg mb-1">变胞/可重构机构理论</h4>
+                <span class="tag bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 mb-2">可变构型</span>
+              </div>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-4">研究可改变自由度、构型、运动特性的变胞机构，以及可重构模块化机构的拓扑演化规律、运动学/动力学建模、构型切换机理。</p>
+            <div class="space-y-2 mb-4">
+              <div class="flex items-start gap-2 text-sm">
+                <i class="fa-solid fa-fire text-orange-500 mt-0.5 shrink-0"></i>
+                <span class="text-gray-700 dark:text-gray-300">变胞机构拓扑综合与运动控制一体化设计</span>
+              </div>
+              <div class="flex items-start gap-2 text-sm">
+                <i class="fa-solid fa-fire text-orange-500 mt-0.5 shrink-0"></i>
+                <span class="text-gray-700 dark:text-gray-300">自重构模块化机器人自动拼接与构型自适应</span>
+              </div>
+              <div class="flex items-start gap-2 text-sm">
+                <i class="fa-solid fa-fire text-orange-500 mt-0.5 shrink-0"></i>
+                <span class="text-gray-700 dark:text-gray-300">折纸/剪纸启发的变胞机构设计</span>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-2 text-xs">
+              <span class="tag bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400"><i class="fa-solid fa-atom mr-1"></i>机械 x 材料</span>
+              <span class="tag bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400"><i class="fa-solid fa-sliders mr-1"></i>机械 x 控制</span>
+            </div>
+            <div class="mt-3 pt-3 border-t border-gray-100 dark:border-gray-800 text-xs text-gray-500 dark:text-gray-500">
+              <i class="fa-solid fa-graduation-cap mr-1"></i>洛桑联邦理工·折纸可展开机器人 | 哈尔滨工业大学·空间变胞机械臂 | <em>Nature Communications</em>
+            </div>
+          </div>
+
+          <!-- 冗余自由度机构设计与优化 -->
+          <div class="card-hover rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+            <div class="flex items-start gap-4 mb-4">
+              <div class="w-10 h-10 rounded-lg bg-cyan-50 dark:bg-cyan-900/30 flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-up-down-left-right text-cyan-600 dark:text-cyan-400"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-lg mb-1">冗余自由度机构设计与优化</h4>
+                <span class="tag bg-cyan-50 dark:bg-cyan-900/20 text-cyan-700 dark:text-cyan-300 mb-2">高灵活性</span>
+              </div>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-4">针对7自由度机械臂、冗余度人形机器人等，开展冗余度分配、避障、容错、轨迹优化的结构设计，解决高灵活性与控制复杂度的矛盾。</p>
+            <div class="space-y-2 mb-4">
+              <div class="flex items-start gap-2 text-sm">
+                <i class="fa-solid fa-fire text-orange-500 mt-0.5 shrink-0"></i>
+                <span class="text-gray-700 dark:text-gray-300">冗余度机器人全局运动学优化（灵活性、避障、能耗）</span>
+              </div>
+              <div class="flex items-start gap-2 text-sm">
+                <i class="fa-solid fa-fire text-orange-500 mt-0.5 shrink-0"></i>
+                <span class="text-gray-700 dark:text-gray-300">冗余关节容错结构设计（单关节故障下仍可完成任务）</span>
+              </div>
+              <div class="flex items-start gap-2 text-sm">
+                <i class="fa-solid fa-fire text-orange-500 mt-0.5 shrink-0"></i>
+                <span class="text-gray-700 dark:text-gray-300">冗余度与柔顺控制结合的结构优化</span>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-2 text-xs">
+              <span class="tag bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400"><i class="fa-solid fa-sliders mr-1"></i>机械 x 控制</span>
+              <span class="tag bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400"><i class="fa-solid fa-chart-line mr-1"></i>机械 x 优化理论</span>
+            </div>
+            <div class="mt-3 pt-3 border-t border-gray-100 dark:border-gray-800 text-xs text-gray-500 dark:text-gray-500">
+              <i class="fa-solid fa-graduation-cap mr-1"></i>NASA·7自由度空间机械臂 | 波士顿动力·Atlas冗余关节设计
+            </div>
+          </div>
+
+          <!-- 机构运动学/动力学精准建模 -->
+          <div class="card-hover rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+            <div class="flex items-start gap-4 mb-4">
+              <div class="w-10 h-10 rounded-lg bg-rose-50 dark:bg-rose-900/30 flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-chart-line text-rose-600 dark:text-rose-400"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-lg mb-1">机构运动学/动力学精准建模</h4>
+                <span class="tag bg-rose-50 dark:bg-rose-900/20 text-rose-700 dark:text-rose-300 mb-2">精准建模</span>
+              </div>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-4">建立机器人机构的正逆运动学、刚柔耦合多体动力学、摩擦动力学模型，开展参数辨识、误差补偿、动态特性分析。</p>
+            <div class="space-y-2 mb-4">
+              <div class="flex items-start gap-2 text-sm">
+                <i class="fa-solid fa-fire text-orange-500 mt-0.5 shrink-0"></i>
+                <span class="text-gray-700 dark:text-gray-300">刚柔耦合动力学高精度建模（高速、柔性机器人）</span>
+              </div>
+              <div class="flex items-start gap-2 text-sm">
+                <i class="fa-solid fa-fire text-orange-500 mt-0.5 shrink-0"></i>
+                <span class="text-gray-700 dark:text-gray-300">数字孪生驱动的机构参数实时辨识与优化</span>
+              </div>
+              <div class="flex items-start gap-2 text-sm">
+                <i class="fa-solid fa-fire text-orange-500 mt-0.5 shrink-0"></i>
+                <span class="text-gray-700 dark:text-gray-300">不确定性环境下的机构动力学鲁棒建模</span>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-2 text-xs">
+              <span class="tag bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400"><i class="fa-solid fa-compass-drafting mr-1"></i>机械 x 力学</span>
+              <span class="tag bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400"><i class="fa-solid fa-robot mr-1"></i>机械 x AI</span>
+            </div>
+            <div class="mt-3 pt-3 border-t border-gray-100 dark:border-gray-800 text-xs text-gray-500 dark:text-gray-500">
+              <i class="fa-solid fa-graduation-cap mr-1"></i>上海交通大学·机器人刚柔耦合动力学 | <em>Int'l Journal of Robotics Research</em>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 1.2 轻量化与高刚度结构优化 -->
+      <div class="mb-16 fade-up">
+        <div class="flex items-center gap-3 mb-8">
+          <div class="w-10 h-10 rounded-lg bg-brand-600 text-white flex items-center justify-center font-bold text-sm">1.2</div>
+          <h3 class="text-2xl font-bold">轻量化与高刚度结构优化</h3>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- 拓扑优化 -->
+          <div class="card-hover rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-9 h-9 rounded-lg bg-teal-50 dark:bg-teal-900/30 flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-bezier-curve text-teal-600 dark:text-teal-400"></i>
+              </div>
+              <h4 class="font-bold">拓扑优化与多目标性能优化</h4>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-3">基于变密度法、水平集法、渐进结构优化法等，开展机械臂连杆、关节壳体、车架等结构的拓扑优化，实现轻量化与高刚度平衡。</p>
+            <div class="space-y-1.5 text-sm">
+              <div class="flex items-start gap-2"><i class="fa-solid fa-angle-right text-brand-500 mt-1 shrink-0 text-xs"></i><span class="text-gray-700 dark:text-gray-300">增材制造导向拓扑优化（3D打印工艺约束）</span></div>
+              <div class="flex items-start gap-2"><i class="fa-solid fa-angle-right text-brand-500 mt-1 shrink-0 text-xs"></i><span class="text-gray-700 dark:text-gray-300">多目标拓扑优化（刚度、重量、振动、热性能）</span></div>
+              <div class="flex items-start gap-2"><i class="fa-solid fa-angle-right text-brand-500 mt-1 shrink-0 text-xs"></i><span class="text-gray-700 dark:text-gray-300">生成式AI辅助拓扑优化</span></div>
+            </div>
+            <div class="mt-3 pt-3 border-t border-gray-100 dark:border-gray-800 text-xs text-gray-500"><i class="fa-solid fa-graduation-cap mr-1"></i>MIT·拓扑优化人形机器人骨骼 | 华中科技大学·增材制造机器人结构</div>
+          </div>
+
+          <!-- 刚柔耦合 -->
+          <div class="card-hover rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-9 h-9 rounded-lg bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-arrows-spin text-amber-600 dark:text-amber-400"></i>
+              </div>
+              <h4 class="font-bold">刚柔耦合结构设计</h4>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-3">设计刚柔混合结构，融合刚性结构高精度与柔性结构高适应性，解决高速重载机器人振动、冲击问题。</p>
+            <div class="space-y-1.5 text-sm">
+              <div class="flex items-start gap-2"><i class="fa-solid fa-angle-right text-brand-500 mt-1 shrink-0 text-xs"></i><span class="text-gray-700 dark:text-gray-300">柔性连杆/关节的结构设计与柔顺控制一体化</span></div>
+              <div class="flex items-start gap-2"><i class="fa-solid fa-angle-right text-brand-500 mt-1 shrink-0 text-xs"></i><span class="text-gray-700 dark:text-gray-300">刚柔耦合结构动力学精准建模与振动抑制</span></div>
+              <div class="flex items-start gap-2"><i class="fa-solid fa-angle-right text-brand-500 mt-1 shrink-0 text-xs"></i><span class="text-gray-700 dark:text-gray-300">柔性机构力感知结构设计（协作机器人）</span></div>
+            </div>
+            <div class="mt-3 pt-3 border-t border-gray-100 dark:border-gray-800 text-xs text-gray-500"><i class="fa-solid fa-graduation-cap mr-1"></i>Universal Robots·协作机器人柔性关节 | ICRA</div>
+          </div>
+
+          <!-- 振动抑制 -->
+          <div class="card-hover rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-9 h-9 rounded-lg bg-pink-50 dark:bg-pink-900/30 flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-wave-square text-pink-600 dark:text-pink-400"></i>
+              </div>
+              <h4 class="font-bold">振动抑制与动态特性优化</h4>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-3">优化结构固有频率、阻尼比，避免共振，提升定位精度与运动平稳性。</p>
+            <div class="space-y-1.5 text-sm">
+              <div class="flex items-start gap-2"><i class="fa-solid fa-angle-right text-brand-500 mt-1 shrink-0 text-xs"></i><span class="text-gray-700 dark:text-gray-300">超材料阻尼结构设计（宽频振动抑制）</span></div>
+              <div class="flex items-start gap-2"><i class="fa-solid fa-angle-right text-brand-500 mt-1 shrink-0 text-xs"></i><span class="text-gray-700 dark:text-gray-300">主动振动抑制的结构集成（压电作动器）</span></div>
+              <div class="flex items-start gap-2"><i class="fa-solid fa-angle-right text-brand-500 mt-1 shrink-0 text-xs"></i><span class="text-gray-700 dark:text-gray-300">高速机器人结构动态特性全局优化</span></div>
+            </div>
+            <div class="mt-3 pt-3 border-t border-gray-100 dark:border-gray-800 text-xs text-gray-500"><i class="fa-solid fa-graduation-cap mr-1"></i>洛桑联邦理工·超材料振动抑制机器人结构 | <em>Science Robotics</em></div>
+          </div>
+
+          <!-- 热结构耦合 -->
+          <div class="card-hover rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-9 h-9 rounded-lg bg-red-50 dark:bg-red-900/30 flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-temperature-high text-red-600 dark:text-red-400"></i>
+              </div>
+              <h4 class="font-bold">热-结构耦合优化</h4>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-3">针对高负载、高速机器人的关节发热问题，开展热结构耦合分析，设计散热结构、隔热结构，抑制热变形对精度的影响。</p>
+            <div class="space-y-1.5 text-sm">
+              <div class="flex items-start gap-2"><i class="fa-solid fa-angle-right text-brand-500 mt-1 shrink-0 text-xs"></i><span class="text-gray-700 dark:text-gray-300">相变材料集成的关节散热结构设计</span></div>
+              <div class="flex items-start gap-2"><i class="fa-solid fa-angle-right text-brand-500 mt-1 shrink-0 text-xs"></i><span class="text-gray-700 dark:text-gray-300">热误差补偿与结构设计一体化优化</span></div>
+              <div class="flex items-start gap-2"><i class="fa-solid fa-angle-right text-brand-500 mt-1 shrink-0 text-xs"></i><span class="text-gray-700 dark:text-gray-300">极端环境下热结构耦合设计（航天、工业）</span></div>
+            </div>
+            <div class="mt-3 pt-3 border-t border-gray-100 dark:border-gray-800 text-xs text-gray-500"><i class="fa-solid fa-graduation-cap mr-1"></i>发那科·工业机器人热结构优化 | <em>Robotics and Computer-Integrated Manufacturing</em></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 1.3 仿生与生物启发式结构设计 -->
+      <div class="fade-up">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-lg bg-brand-600 text-white flex items-center justify-center font-bold text-sm">1.3</div>
+          <h3 class="text-2xl font-bold">仿生与生物启发式结构设计</h3>
+        </div>
+        <p class="text-gray-600 dark:text-gray-400 mb-8 max-w-3xl">模仿生物的结构、运动、感知机理，突破传统刚性机器人的性能边界，是具身智能机器人的核心结构支撑。</p>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- 生物形态仿生 -->
+          <div class="card-hover rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+            <div class="flex items-start gap-4 mb-4">
+              <div class="w-10 h-10 rounded-lg bg-green-50 dark:bg-green-900/30 flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-dna text-green-600 dark:text-green-400"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-lg mb-1">生物形态仿生结构设计</h4>
+                <span class="tag bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300">仿生核心</span>
+              </div>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-4">模仿人、动物、昆虫等生物的躯体结构，设计仿人机器人骨骼、四足/六足机器人腿部、仿生柔性臂等结构。</p>
+            <div class="space-y-2 mb-4">
+              <div class="flex items-start gap-2 text-sm"><i class="fa-solid fa-fire text-orange-500 mt-0.5 shrink-0"></i><span class="text-gray-700 dark:text-gray-300">仿人肌肉-骨骼耦合结构设计（脊柱、髋关节、肌肉驱动骨骼）</span></div>
+              <div class="flex items-start gap-2 text-sm"><i class="fa-solid fa-fire text-orange-500 mt-0.5 shrink-0"></i><span class="text-gray-700 dark:text-gray-300">仿生连续体/软体机器人结构（仿章鱼臂、仿生蠕虫）</span></div>
+              <div class="flex items-start gap-2 text-sm"><i class="fa-solid fa-fire text-orange-500 mt-0.5 shrink-0"></i><span class="text-gray-700 dark:text-gray-300">仿生扑翼/游动机器人结构（仿鸟类、鱼类高效运动）</span></div>
+            </div>
+            <div class="mt-3 pt-3 border-t border-gray-100 dark:border-gray-800 text-xs text-gray-500"><i class="fa-solid fa-graduation-cap mr-1"></i>波士顿动力·Atlas仿人骨骼结构 | 斯坦福大学·仿章鱼柔性臂 | <em>Nature</em></div>
+          </div>
+
+          <!-- 柔性/软体机器人 -->
+          <div class="card-hover rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+            <div class="flex items-start gap-4 mb-4">
+              <div class="w-10 h-10 rounded-lg bg-sky-50 dark:bg-sky-900/30 flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-wind text-sky-600 dark:text-sky-400"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-lg mb-1">柔性/软体机器人结构设计</h4>
+                <span class="tag bg-sky-50 dark:bg-sky-900/20 text-sky-700 dark:text-sky-300">高适应性</span>
+              </div>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-4">设计基于柔性材料、绳驱、气动、磁控的软体机器人结构，实现非结构化环境的高适应性交互。</p>
+            <div class="space-y-2 mb-4">
+              <div class="flex items-start gap-2 text-sm"><i class="fa-solid fa-fire text-orange-500 mt-0.5 shrink-0"></i><span class="text-gray-700 dark:text-gray-300">多材料3D打印的软体机器人结构</span></div>
+              <div class="flex items-start gap-2 text-sm"><i class="fa-solid fa-fire text-orange-500 mt-0.5 shrink-0"></i><span class="text-gray-700 dark:text-gray-300">绳驱/气动连续体机器人结构设计</span></div>
+              <div class="flex items-start gap-2 text-sm"><i class="fa-solid fa-fire text-orange-500 mt-0.5 shrink-0"></i><span class="text-gray-700 dark:text-gray-300">软体机器人感知-驱动一体化结构</span></div>
+            </div>
+            <div class="flex flex-wrap gap-2 text-xs">
+              <span class="tag bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400"><i class="fa-solid fa-hand-holding-medical mr-1"></i>医疗辅助</span>
+              <span class="tag bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400"><i class="fa-solid fa-mountain-sun mr-1"></i>极端环境</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 第二大部分：驱动与致动系统 -->
+  <section id="actuation" class="py-20 px-4">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-16 fade-up">
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 text-xs font-semibold mb-4">
+          <i class="fa-solid fa-bolt"></i>
+          <span>PART 02</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-bold mb-4">驱动与致动系统</h2>
+        <p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">从传统驱动到智能材料、仿生致动，再到微纳尺度与自供能技术，全面覆盖驱动前沿</p>
+      </div>
+
+      <!-- 驱动系统全景图 -->
+      <div class="fade-up mb-16">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- 传统驱动 -->
+          <div class="accordion-trigger card-hover rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 cursor-pointer" data-target="trad">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 rounded-lg bg-orange-50 dark:bg-orange-900/30 flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-industry text-orange-600 dark:text-orange-400"></i>
+              </div>
+              <div class="flex-1">
+                <h4 class="font-bold">传统电气/流体驱动</h4>
+                <span class="text-xs text-gray-500 dark:text-gray-500">工业基础</span>
+              </div>
+              <i class="fa-solid fa-chevron-down text-gray-400 text-sm transition-transform"></i>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400">电机、液压、气动三大经典驱动方式，工业机器人主要驱动力</p>
+          </div>
+
+          <!-- 智能材料驱动 -->
+          <div class="accordion-trigger card-hover rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 cursor-pointer" data-target="smart">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 rounded-lg bg-purple-50 dark:bg-purple-900/30 flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-wand-magic-sparkles text-purple-600 dark:text-purple-400"></i>
+              </div>
+              <div class="flex-1">
+                <h4 class="font-bold">智能材料驱动</h4>
+                <span class="text-xs text-gray-500 dark:text-gray-500">新兴前沿</span>
+              </div>
+              <i class="fa-solid fa-chevron-down text-gray-400 text-sm transition-transform"></i>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400">SMA、压电、EAP、磁致伸缩、水凝胶等新型致动材料</p>
+          </div>
+
+          <!-- 仿生肌肉致动 -->
+          <div class="accordion-trigger card-hover rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 cursor-pointer" data-target="bionic">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 rounded-lg bg-emerald-50 dark:bg-emerald-900/30 flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-hand-fist text-emerald-600 dark:text-emerald-400"></i>
+              </div>
+              <div class="flex-1">
+                <h4 class="font-bold">仿生肌肉与生物启发致动</h4>
+                <span class="text-xs text-gray-500 dark:text-gray-500">具身智能核心</span>
+              </div>
+              <i class="fa-solid fa-chevron-down text-gray-400 text-sm transition-transform"></i>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400">绳驱仿生肌肉、可变刚度致动、仿生多自由度肌肉阵列</p>
+          </div>
+
+          <!-- 微纳尺度 -->
+          <div class="accordion-trigger card-hover rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 cursor-pointer" data-target="micro">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-atom text-blue-600 dark:text-blue-400"></i>
+              </div>
+              <div class="flex-1">
+                <h4 class="font-bold">微纳尺度致动技术</h4>
+                <span class="text-xs text-gray-500 dark:text-gray-500">精密操作</span>
+              </div>
+              <i class="fa-solid fa-chevron-down text-gray-400 text-sm transition-transform"></i>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400">MEMS微致动、光控/磁控/声控微纳驱动、微流体致动</p>
+          </div>
+
+          <!-- 新型能量驱动 -->
+          <div class="accordion-trigger card-hover rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 cursor-pointer" data-target="energy">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 rounded-lg bg-yellow-50 dark:bg-yellow-900/30 flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-solar-panel text-yellow-600 dark:text-yellow-400"></i>
+              </div>
+              <div class="flex-1">
+                <h4 class="font-bold">新型能量驱动与自供能致动</h4>
+                <span class="text-xs text-gray-500 dark:text-gray-500">绿色自主</span>
+              </div>
+              <i class="fa-solid fa-chevron-down text-gray-400 text-sm transition-transform"></i>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400">能量收集型致动、无线传能驱动、化学能/生物能致动</p>
+          </div>
+
+          <!-- 驱动系统集成 -->
+          <div class="accordion-trigger card-hover rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 cursor-pointer" data-target="system">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 rounded-lg bg-red-50 dark:bg-red-900/30 flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-circle-nodes text-red-600 dark:text-red-400"></i>
+              </div>
+              <div class="flex-1">
+                <h4 class="font-bold">驱动系统集成与能效优化</h4>
+                <span class="text-xs text-gray-500 dark:text-gray-500">系统级</span>
+              </div>
+              <i class="fa-solid fa-chevron-down text-gray-400 text-sm transition-transform"></i>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400">多源驱动协同、驱动-结构-控制一体化、能效与热管理</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 展开详情区域 -->
+      <div id="trad" class="accordion-content fade-up">
+        <div class="rounded-2xl border border-orange-200 dark:border-orange-900/50 bg-orange-50/30 dark:bg-orange-900/10 p-8 mb-6">
+          <h4 class="text-xl font-bold mb-6 flex items-center gap-2"><i class="fa-solid fa-industry text-orange-500"></i> 传统电气/流体驱动</h4>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white dark:bg-gray-900 rounded-xl p-5 border border-gray-200 dark:border-gray-800">
+              <h5 class="font-bold mb-2 text-sm flex items-center gap-2"><i class="fa-solid fa-bolt text-yellow-500"></i> 电机驱动</h5>
+              <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">无刷/有刷直流电机、步进电机、伺服电机；高精度编码器与减速器集成；直接驱动与谐波/行星减速驱动</p>
+            </div>
+            <div class="bg-white dark:bg-gray-900 rounded-xl p-5 border border-gray-200 dark:border-gray-800">
+              <h5 class="font-bold mb-2 text-sm flex items-center gap-2"><i class="fa-solid fa-droplet text-blue-500"></i> 液压驱动</h5>
+              <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">电液伺服阀控液压缸/马达；高功率密度液压驱动（Boston Atlas液压版）；仿生液压肌肉驱动</p>
+            </div>
+            <div class="bg-white dark:bg-gray-900 rounded-xl p-5 border border-gray-200 dark:border-gray-800">
+              <h5 class="font-bold mb-2 text-sm flex items-center gap-2"><i class="fa-solid fa-wind text-green-500"></i> 气动驱动</h5>
+              <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">气动人工肌肉（McKibben型）；比例压力阀控气缸；柔性气动弯曲关节；固有柔顺性适合人机协作</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="smart" class="accordion-content fade-up">
+        <div class="rounded-2xl border border-purple-200 dark:border-purple-900/50 bg-purple-50/30 dark:bg-purple-900/10 p-8 mb-6">
+          <h4 class="text-xl font-bold mb-6 flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles text-purple-500"></i> 智能材料驱动</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="bg-white dark:bg-gray-900 rounded-xl p-5 border border-gray-200 dark:border-gray-800">
+              <h5 class="font-bold mb-2 text-sm">形状记忆合金 (SMA)</h5>
+              <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">NiTi合金相变驱动；高能量密度致动；仿生微型驱动应用；学术热点：SMA丝阵列驱动、快速冷却策略</p>
+            </div>
+            <div class="bg-white dark:bg-gray-900 rounded-xl p-5 border border-gray-200 dark:border-gray-800">
+              <h5 class="font-bold mb-2 text-sm">压电致动</h5>
+              <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">PZT压电陶瓷/单晶；纳米级精度、高频响应；尺蠖/惯性驱动原理；学术热点：多自由度压电平台、超声电机</p>
+            </div>
+            <div class="bg-white dark:bg-gray-900 rounded-xl p-5 border border-gray-200 dark:border-gray-800">
+              <h5 class="font-bold mb-2 text-sm">电活性聚合物 (EAP)</h5>
+              <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">介电弹性体大变形驱动；离子聚合物-金属复合(IPMC)低电压驱动；学术热点：自感知DE驱动、仿生鱼/昆虫驱动</p>
+            </div>
+            <div class="bg-white dark:bg-gray-900 rounded-xl p-5 border border-gray-200 dark:border-gray-800">
+              <h5 class="font-bold mb-2 text-sm">磁致伸缩致动</h5>
+              <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">Terfenol-D超磁致伸缩材料；高频、大力致动；学术热点：磁致伸缩-压电复合驱动、精密定位</p>
+            </div>
+            <div class="bg-white dark:bg-gray-900 rounded-xl p-5 border border-gray-200 dark:border-gray-800">
+              <h5 class="font-bold mb-2 text-sm">水凝胶与刺激响应致动</h5>
+              <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">pH/温度/光响应水凝胶驱动；溶胀-收缩动力学；生物兼容驱动；学术热点：可降解医疗微型机器人驱动</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="bionic" class="accordion-content fade-up">
+        <div class="rounded-2xl border border-emerald-200 dark:border-emerald-900/50 bg-emerald-50/30 dark:bg-emerald-900/10 p-8 mb-6">
+          <h4 class="text-xl font-bold mb-6 flex items-center gap-2"><i class="fa-solid fa-hand-fist text-emerald-500"></i> 仿生肌肉与生物启发致动</h4>
+          <div class="flex items-center gap-2 mb-4">
+            <span class="tag bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300"><i class="fa-solid fa-star mr-1"></i>具身智能·人形机器人核心方向</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-white dark:bg-gray-900 rounded-xl p-5 border border-gray-200 dark:border-gray-800">
+              <h5 class="font-bold mb-2 text-sm">绳驱/腱驱仿生肌肉系统</h5>
+              <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed mb-2">仿生骨骼肌的腱驱布局、力分配策略、可变刚度设计；多绳协同驱动建模</p>
+              <div class="text-xs text-gray-500">学术热点：仿人体肌肉群分布式绳驱 · 绳驱冗余驱动优化与抗松弛</div>
+              <div class="mt-2 text-xs text-brand-600 dark:text-brand-400">跨学科：生物力学 x 机器人控制 x 仿生学</div>
+            </div>
+            <div class="bg-white dark:bg-gray-900 rounded-xl p-5 border border-gray-200 dark:border-gray-800">
+              <h5 class="font-bold mb-2 text-sm">可变刚度致动 (VSA)</h5>
+              <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed mb-2">串联弹性驱动(SEA)、并联弹性驱动(PEA)、可变刚度关节理论；安全人机交互</p>
+              <div class="text-xs text-gray-500">学术热点：自适应刚度调节 · 能量回收型弹性致动 · 碰撞安全与柔顺交互</div>
+              <div class="mt-2 text-xs text-brand-600 dark:text-brand-400">跨学科：控制理论 x 人机交互(HRI)</div>
+            </div>
+            <div class="bg-white dark:bg-gray-900 rounded-xl p-5 border border-gray-200 dark:border-gray-800">
+              <h5 class="font-bold mb-2 text-sm">仿生多自由度肌肉阵列致动</h5>
+              <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed mb-2">多束肌肉协同驱动、拮抗驱动机制；仿生物运动的动力分配</p>
+              <div class="text-xs text-gray-500">学术热点：类人躯干、颈部肌肉驱动系统</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="micro" class="accordion-content fade-up">
+        <div class="rounded-2xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/30 dark:bg-blue-900/10 p-8 mb-6">
+          <h4 class="text-xl font-bold mb-6 flex items-center gap-2"><i class="fa-solid fa-atom text-blue-500"></i> 微纳尺度致动技术</h4>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-white dark:bg-gray-900 rounded-xl p-5 border border-gray-200 dark:border-gray-800">
+              <h5 class="font-bold mb-2 text-sm">MEMS微致动</h5>
+              <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">静电驱动、电磁驱动、热驱动微结构；芯片级微操作机器人；MEMS微夹钳、细胞操作微致动</p>
+            </div>
+            <div class="bg-white dark:bg-gray-900 rounded-xl p-5 border border-gray-200 dark:border-gray-800">
+              <h5 class="font-bold mb-2 text-sm">光控/磁控/声控无缆微纳致动</h5>
+              <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">外场驱动微纳机器人动力学、集群运动控制；磁控螺旋微机器人、光驱动微型软体机器人</p>
+              <div class="mt-2 text-xs text-brand-600 dark:text-brand-400">跨学科：微纳机电 x 生物医学 x 物理学</div>
+            </div>
+            <div class="bg-white dark:bg-gray-900 rounded-xl p-5 border border-gray-200 dark:border-gray-800">
+              <h5 class="font-bold mb-2 text-sm">微流体致动</h5>
+              <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">芯片内微流体驱动、气泡驱动、毛细管力驱动</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="energy" class="accordion-content fade-up">
+        <div class="rounded-2xl border border-yellow-200 dark:border-yellow-900/50 bg-yellow-50/30 dark:bg-yellow-900/10 p-8 mb-6">
+          <h4 class="text-xl font-bold mb-6 flex items-center gap-2"><i class="fa-solid fa-solar-panel text-yellow-500"></i> 新型能量驱动与自供能致动</h4>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-white dark:bg-gray-900 rounded-xl p-5 border border-gray-200 dark:border-gray-800">
+              <h5 class="font-bold mb-2 text-sm">能量收集型致动</h5>
+              <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">压电/摩擦/热电能量收集与驱动一体化；自供能无线驱动；环境能量回收驱动软体机器人</p>
+            </div>
+            <div class="bg-white dark:bg-gray-900 rounded-xl p-5 border border-gray-200 dark:border-gray-800">
+              <h5 class="font-bold mb-2 text-sm">无线传能驱动技术</h5>
+              <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">磁感应无线传能、微波传能；无缆机器人持续驱动；体内医疗机器人无线供能驱动</p>
+            </div>
+            <div class="bg-white dark:bg-gray-900 rounded-xl p-5 border border-gray-200 dark:border-gray-800">
+              <h5 class="font-bold mb-2 text-sm">化学能/生物能致动</h5>
+              <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">燃料电池驱动、催化反应驱动、生物燃料驱动；长航时微型机器人化学动力</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="system" class="accordion-content fade-up">
+        <div class="rounded-2xl border border-red-200 dark:border-red-900/50 bg-red-50/30 dark:bg-red-900/10 p-8 mb-6">
+          <h4 class="text-xl font-bold mb-6 flex items-center gap-2"><i class="fa-solid fa-circle-nodes text-red-500"></i> 驱动系统集成、协同与能效优化</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-white dark:bg-gray-900 rounded-xl p-5 border border-gray-200 dark:border-gray-800">
+              <h5 class="font-bold mb-2 text-sm">多源驱动协同控制</h5>
+              <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">电-气-磁-智能材料混合驱动协调；多执行器动态分配；具身智能混合驱动系统</p>
+            </div>
+            <div class="bg-white dark:bg-gray-900 rounded-xl p-5 border border-gray-200 dark:border-gray-800">
+              <h5 class="font-bold mb-2 text-sm">驱动-结构-控制一体化设计</h5>
+              <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">从结构刚度、质量分布出发优化驱动参数；动力学逆优化；AI辅助驱动-结构联合优化</p>
+            </div>
+            <div class="bg-white dark:bg-gray-900 rounded-xl p-5 border border-gray-200 dark:border-gray-800">
+              <h5 class="font-bold mb-2 text-sm">驱动系统能效与热管理</h5>
+              <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">关节损耗建模、动态能耗最小化、再生制动；高密度驱动散热；人形机器人全身能效优化</p>
+            </div>
+            <div class="bg-white dark:bg-gray-900 rounded-xl p-5 border border-gray-200 dark:border-gray-800">
+              <h5 class="font-bold mb-2 text-sm">驱动故障诊断与容错控制</h5>
+              <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">执行器故障检测、观测器设计、容错轨迹重构；空间/特种机器人冗余驱动容错</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 第三大部分：硬件集成与可靠性 -->
+  <section id="integration" class="py-20 px-4 bg-gray-50/50 dark:bg-gray-900/50">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-16 fade-up">
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 text-xs font-semibold mb-4">
+          <i class="fa-solid fa-microchip"></i>
+          <span>PART 03</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-bold mb-4">硬件集成与可靠性</h2>
+        <p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">系统集成设计、可靠性保障与故障容错，确保双臂灵巧手机器人在实际应用中稳定运行</p>
+      </div>
+
+      <div class="fade-up grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="card-hover rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-8">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 rounded-lg bg-emerald-50 dark:bg-emerald-900/30 flex items-center justify-center shrink-0">
+              <i class="fa-solid fa-puzzle-piece text-emerald-600 dark:text-emerald-400"></i>
+            </div>
+            <h4 class="font-bold text-lg">机器人硬件系统集成设计</h4>
+          </div>
+          <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-4">将机械结构、驱动系统、传感器、控制器等子系统进行一体化集成设计，确保各模块间的接口兼容性、信号一致性与物理布局优化。</p>
+          <div class="space-y-2">
+            <div class="flex items-start gap-2 text-sm"><i class="fa-solid fa-check-circle text-emerald-500 mt-0.5 shrink-0"></i><span class="text-gray-700 dark:text-gray-300">机电软一体化协同设计方法</span></div>
+            <div class="flex items-start gap-2 text-sm"><i class="fa-solid fa-check-circle text-emerald-500 mt-0.5 shrink-0"></i><span class="text-gray-700 dark:text-gray-300">模块化硬件架构与快速拆装接口</span></div>
+            <div class="flex items-start gap-2 text-sm"><i class="fa-solid fa-check-circle text-emerald-500 mt-0.5 shrink-0"></i><span class="text-gray-700 dark:text-gray-300">线缆/管路集成布局优化</span></div>
+            <div class="flex items-start gap-2 text-sm"><i class="fa-solid fa-check-circle text-emerald-500 mt-0.5 shrink-0"></i><span class="text-gray-700 dark:text-gray-300">EMC电磁兼容设计与信号完整性</span></div>
+          </div>
+        </div>
+
+        <div class="card-hover rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-8">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 rounded-lg bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center shrink-0">
+              <i class="fa-solid fa-shield-halved text-amber-600 dark:text-amber-400"></i>
+            </div>
+            <h4 class="font-bold text-lg">可靠性与容错设计</h4>
+          </div>
+          <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-4">从设计源头提升硬件系统的可靠性，实现故障预测、诊断与容错运行，保障在复杂工况下的持续稳定工作。</p>
+          <div class="space-y-2">
+            <div class="flex items-start gap-2 text-sm"><i class="fa-solid fa-check-circle text-emerald-500 mt-0.5 shrink-0"></i><span class="text-gray-700 dark:text-gray-300">FMEA/FTA失效模式分析与设计改进</span></div>
+            <div class="flex items-start gap-2 text-sm"><i class="fa-solid fa-check-circle text-emerald-500 mt-0.5 shrink-0"></i><span class="text-gray-700 dark:text-gray-300">冗余传感器/执行器容错架构</span></div>
+            <div class="flex items-start gap-2 text-sm"><i class="fa-solid fa-check-circle text-emerald-500 mt-0.5 shrink-0"></i><span class="text-gray-700 dark:text-gray-300">基于数字孪生的预测性维护</span></div>
+            <div class="flex items-start gap-2 text-sm"><i class="fa-solid fa-check-circle text-emerald-500 mt-0.5 shrink-0"></i><span class="text-gray-700 dark:text-gray-300">极端环境适应性设计与测试验证</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 前沿趋势 -->
+  <section id="frontier" class="py-20 px-4">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-16 fade-up">
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-brand-50 to-purple-50 dark:from-brand-900/20 dark:to-purple-900/20 text-brand-700 dark:text-brand-300 text-xs font-semibold mb-4">
+          <i class="fa-solid fa-rocket"></i>
+          <span>FRONTIER</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-bold mb-4">前沿趋势与跨学科融合</h2>
+        <p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">双臂灵巧手机器人领域最具活力的前沿方向与学科交叉热点</p>
+      </div>
+
+      <!-- 趋势卡片 -->
+      <div class="fade-up grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        <div class="card-hover group rounded-2xl border border-gray-200 dark:border-gray-800 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-6">
+          <div class="w-12 h-12 rounded-xl bg-white dark:bg-gray-800 shadow-sm flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-brain text-xl text-indigo-600 dark:text-indigo-400"></i>
+          </div>
+          <h4 class="font-bold mb-2">AI驱动的机构自动设计</h4>
+          <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">利用大模型与强化学习自动生成满足特定需求的新型机构构型，突破人类设计经验局限，实现从需求到构型的端到端自动综合。</p>
+        </div>
+
+        <div class="card-hover group rounded-2xl border border-gray-200 dark:border-gray-800 bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 p-6">
+          <div class="w-12 h-12 rounded-xl bg-white dark:bg-gray-800 shadow-sm flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-person-running text-xl text-emerald-600 dark:text-emerald-400"></i>
+          </div>
+          <h4 class="font-bold mb-2">具身智能机器人</h4>
+          <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">融合仿生肌肉-骨骼系统与可变刚度致动，构建具有身体智能的人形机器人，实现安全人机交互与环境自适应运动。</p>
+        </div>
+
+        <div class="card-hover group rounded-2xl border border-gray-200 dark:border-gray-800 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 p-6">
+          <div class="w-12 h-12 rounded-xl bg-white dark:bg-gray-800 shadow-sm flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-cubes text-xl text-purple-600 dark:text-purple-400"></i>
+          </div>
+          <h4 class="font-bold mb-2">超材料与折纸机构</h4>
+          <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">折纸/剪纸启发的变胞机构设计与超材料阻尼结构，突破传统材料性能边界，实现宽频振动抑制与可展开结构创新。</p>
+        </div>
+
+        <div class="card-hover group rounded-2xl border border-gray-200 dark:border-gray-800 bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 p-6">
+          <div class="w-12 h-12 rounded-xl bg-white dark:bg-gray-800 shadow-sm flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-vr-cardboard text-xl text-amber-600 dark:text-amber-400"></i>
+          </div>
+          <h4 class="font-bold mb-2">数字孪生驱动的机器人设计</h4>
+          <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">数字孪生驱动的机构参数实时辨识与优化，实现物理机器人与虚拟模型的实时映射与双向驱动，加速设计迭代与预测性维护。</p>
+        </div>
+
+        <div class="card-hover group rounded-2xl border border-gray-200 dark:border-gray-800 bg-gradient-to-br from-rose-50 to-red-50 dark:from-rose-900/20 dark:to-red-900/20 p-6">
+          <div class="w-12 h-12 rounded-xl bg-white dark:bg-gray-800 shadow-sm flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-syringe text-xl text-rose-600 dark:text-rose-400"></i>
+          </div>
+          <h4 class="font-bold mb-2">医疗微型机器人</h4>
+          <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">磁控/光控微纳致动与水凝胶生物兼容驱动，实现可降解医疗微型机器人靶向递药与细胞操作，开辟精准医疗新范式。</p>
+        </div>
+
+        <div class="card-hover group rounded-2xl border border-gray-200 dark:border-gray-800 bg-gradient-to-br from-cyan-50 to-sky-50 dark:from-cyan-900/20 dark:to-sky-900/20 p-6">
+          <div class="w-12 h-12 rounded-xl bg-white dark:bg-gray-800 shadow-sm flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-leaf text-xl text-cyan-600 dark:text-cyan-400"></i>
+          </div>
+          <h4 class="font-bold mb-2">绿色自主驱动机器人</h4>
+          <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">能量收集型致动与化学能/生物能驱动，实现机器人长时自主运行与环境能量回收，推动绿色可持续机器人技术发展。</p>
+        </div>
+      </div>
+
+      <!-- 跨学科融合图谱 -->
+      <div class="fade-up">
+        <h3 class="text-2xl font-bold text-center mb-8">跨学科融合图谱</h3>
+        <div class="relative max-w-4xl mx-auto">
+          <!-- 中心节点 -->
+          <div class="flex justify-center mb-8">
+            <div class="w-28 h-28 rounded-full bg-gradient-to-br from-brand-600 to-purple-600 flex items-center justify-center text-white font-bold text-center text-sm leading-tight shadow-xl shadow-brand-500/20">
+              双臂灵巧<br/>手机器人
+            </div>
+          </div>
+          <!-- 融合方向 -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+            <div class="text-center p-4 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 card-hover">
+              <div class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mx-auto mb-2">
+                <i class="fa-solid fa-square-root-variable text-blue-600 dark:text-blue-400"></i>
+              </div>
+              <div class="text-sm font-medium">数学</div>
+              <div class="text-xs text-gray-500">拓扑学·优化</div>
+            </div>
+            <div class="text-center p-4 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 card-hover">
+              <div class="w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center mx-auto mb-2">
+                <i class="fa-solid fa-robot text-purple-600 dark:text-purple-400"></i>
+              </div>
+              <div class="text-sm font-medium">人工智能</div>
+              <div class="text-xs text-gray-500">生成式设计·孪生</div>
+            </div>
+            <div class="text-center p-4 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 card-hover">
+              <div class="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center mx-auto mb-2">
+                <i class="fa-solid fa-dna text-green-600 dark:text-green-400"></i>
+              </div>
+              <div class="text-sm font-medium">生物学</div>
+              <div class="text-xs text-gray-500">仿生·力学</div>
+            </div>
+            <div class="text-center p-4 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 card-hover">
+              <div class="w-10 h-10 rounded-lg bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center mx-auto mb-2">
+                <i class="fa-solid fa-flask text-orange-600 dark:text-orange-400"></i>
+              </div>
+              <div class="text-sm font-medium">材料科学</div>
+              <div class="text-xs text-gray-500">超材料·增材</div>
+            </div>
+            <div class="text-center p-4 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 card-hover col-span-2 sm:col-span-1">
+              <div class="w-10 h-10 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center mx-auto mb-2">
+                <i class="fa-solid fa-stethoscope text-red-600 dark:text-red-400"></i>
+              </div>
+              <div class="text-sm font-medium">生物医学</div>
+              <div class="text-xs text-gray-500">微型·医疗</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 代表性研究机构与顶刊 -->
+  <section class="py-16 px-4 bg-gray-50/50 dark:bg-gray-900/50">
+    <div class="max-w-7xl mx-auto fade-up">
+      <h3 class="text-2xl font-bold text-center mb-10">代表性研究机构与顶刊</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- 研究机构 -->
+        <div class="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+          <h4 class="font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-building-columns text-brand-500"></i> 代表性研究机构</h4>
+          <div class="space-y-2.5">
+            <div class="flex items-center gap-3 text-sm">
+              <div class="w-2 h-2 rounded-full bg-brand-500 shrink-0"></div>
+              <span class="text-gray-700 dark:text-gray-300"><strong>MIT</strong> — 人形机器人并联关节设计 / 拓扑优化骨骼</span>
+            </div>
+            <div class="flex items-center gap-3 text-sm">
+              <div class="w-2 h-2 rounded-full bg-brand-500 shrink-0"></div>
+              <span class="text-gray-700 dark:text-gray-300"><strong>清华大学</strong> — 混联加工机器人构型</span>
+            </div>
+            <div class="flex items-center gap-3 text-sm">
+              <div class="w-2 h-2 rounded-full bg-brand-500 shrink-0"></div>
+              <span class="text-gray-700 dark:text-gray-300"><strong>上海交通大学</strong> — 机器人刚柔耦合动力学</span>
+            </div>
+            <div class="flex items-center gap-3 text-sm">
+              <div class="w-2 h-2 rounded-full bg-brand-500 shrink-0"></div>
+              <span class="text-gray-700 dark:text-gray-300"><strong>哈尔滨工业大学</strong> — 空间变胞机械臂</span>
+            </div>
+            <div class="flex items-center gap-3 text-sm">
+              <div class="w-2 h-2 rounded-full bg-brand-500 shrink-0"></div>
+              <span class="text-gray-700 dark:text-gray-300"><strong>华中科技大学</strong> — 增材制造机器人结构</span>
+            </div>
+            <div class="flex items-center gap-3 text-sm">
+              <div class="w-2 h-2 rounded-full bg-brand-500 shrink-0"></div>
+              <span class="text-gray-700 dark:text-gray-300"><strong>洛桑联邦理工 (EPFL)</strong> — 折纸可展开机器人 / 超材料振动抑制</span>
+            </div>
+            <div class="flex items-center gap-3 text-sm">
+              <div class="w-2 h-2 rounded-full bg-brand-500 shrink-0"></div>
+              <span class="text-gray-700 dark:text-gray-300"><strong>斯坦福大学</strong> — 仿章鱼柔性臂</span>
+            </div>
+            <div class="flex items-center gap-3 text-sm">
+              <div class="w-2 h-2 rounded-full bg-brand-500 shrink-0"></div>
+              <span class="text-gray-700 dark:text-gray-300"><strong>NASA</strong> — 7自由度空间机械臂</span>
+            </div>
+            <div class="flex items-center gap-3 text-sm">
+              <div class="w-2 h-2 rounded-full bg-brand-500 shrink-0"></div>
+              <span class="text-gray-700 dark:text-gray-300"><strong>波士顿动力</strong> — Atlas仿人骨骼/冗余关节设计</span>
+            </div>
+          </div>
+        </div>
+        <!-- 顶刊顶会 -->
+        <div class="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+          <h4 class="font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-book-open text-brand-500"></i> 代表性顶刊与顶会</h4>
+          <div class="space-y-4">
+            <div>
+              <h5 class="text-sm font-semibold text-brand-600 dark:text-brand-400 mb-2">顶级期刊</h5>
+              <div class="flex flex-wrap gap-2">
+                <span class="tag bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300">Nature</span>
+                <span class="tag bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300">Nature Communications</span>
+                <span class="tag bg-orange-50 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300">Science Robotics</span>
+                <span class="tag bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300">Mechanism and Machine Theory</span>
+                <span class="tag bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300">Int'l Journal of Robotics Research</span>
+                <span class="tag bg-teal-50 dark:bg-teal-900/20 text-teal-700 dark:text-teal-300">Structural and Multidisciplinary Optimization</span>
+                <span class="tag bg-cyan-50 dark:bg-cyan-900/20 text-cyan-700 dark:text-cyan-300">Robotics and Computer-Integrated Manufacturing</span>
+              </div>
+            </div>
+            <div>
+              <h5 class="text-sm font-semibold text-brand-600 dark:text-brand-400 mb-2">顶级会议</h5>
+              <div class="flex flex-wrap gap-2">
+                <span class="tag bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-300">ICRA</span>
+                <span class="tag bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-300">IROS</span>
+              </div>
+            </div>
+            <div>
+              <h5 class="text-sm font-semibold text-brand-600 dark:text-brand-400 mb-2">代表企业</h5>
+              <div class="flex flex-wrap gap-2">
+                <span class="tag bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300">波士顿动力</span>
+                <span class="tag bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300">Universal Robots</span>
+                <span class="tag bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300">发那科</span>
+                <span class="tag bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300">NASA</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-16 px-4 border-t border-gray-200 dark:border-gray-800">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-600 to-purple-600 flex items-center justify-center">
+            <i class="fa-solid fa-robot text-white"></i>
+          </div>
+          <div>
+            <div class="font-bold text-lg">双臂灵巧手机器人学术科研</div>
+            <div class="text-sm text-gray-500 dark:text-gray-400">学术研究知识体系可视化</div>
+          </div>
+        </div>
+
+        <div class="text-center md:text-right">
+          <div class="text-sm text-gray-600 dark:text-gray-400 mb-2">
+            作者：双臂灵巧手机器人研究团队
+          </div>
+          <div class="flex items-center justify-center md:justify-end gap-4 mb-3">
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="w-9 h-9 rounded-lg border border-gray-200 dark:border-gray-700 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors hover:scale-110" aria-label="GitHub">
+              <i class="fa-brands fa-github text-lg"></i>
+            </a>
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="w-9 h-9 rounded-lg border border-gray-200 dark:border-gray-700 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors hover:scale-110" aria-label="Twitter/X">
+              <i class="fa-brands fa-x-twitter text-lg"></i>
+            </a>
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="w-9 h-9 rounded-lg border border-gray-200 dark:border-gray-700 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors hover:scale-110" aria-label="LinkedIn">
+              <i class="fa-brands fa-linkedin-in text-lg"></i>
+            </a>
+          </div>
+          <div class="text-xs text-gray-400 dark:text-gray-600">
+            &copy; 2025 双臂灵巧手机器人学术科研. 保留所有权利.
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 返回顶部 -->
+  <button id="backToTop" class="back-to-top fixed bottom-8 right-8 w-11 h-11 rounded-xl bg-brand-600 hover:bg-brand-700 text-white shadow-lg shadow-brand-600/20 flex items-center justify-center transition-all hover:scale-110 z-40" aria-label="返回顶部">
+    <i class="fa-solid fa-arrow-up text-sm"></i>
+  </button>
+
+  <script>
+    // ===== 深色模式切换 =====
+    (function() {
+      const toggle = document.getElementById('themeToggle');
+      const html = document.documentElement;
+
+      // 跟随系统设置
+      function getPreferredTheme() {
+        const stored = localStorage.getItem('theme');
+        if (stored) return stored;
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+
+      function applyTheme(theme) {
+        if (theme === 'dark') {
+          html.classList.add('dark');
+        } else {
+          html.classList.remove('dark');
+        }
+      }
+
+      applyTheme(getPreferredTheme());
+
+      toggle.addEventListener('click', function() {
+        const current = html.classList.contains('dark') ? 'dark' : 'light';
+        const next = current === 'dark' ? 'light' : 'dark';
+        localStorage.setItem('theme', next);
+        applyTheme(next);
+      });
+
+      // 监听系统主题变化
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+        if (!localStorage.getItem('theme')) {
+          applyTheme(e.matches ? 'dark' : 'light');
+        }
+      });
+    })();
+
+    // ===== 滚动淡入动画 =====
+    (function() {
+      const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+      document.querySelectorAll('.fade-up').forEach(function(el) {
+        observer.observe(el);
+      });
+    })();
+
+    // ===== 返回顶部 =====
+    (function() {
+      var backToTop = document.getElementById('backToTop');
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 400) {
+          backToTop.classList.add('show');
+        } else {
+          backToTop.classList.remove('show');
+        }
+      });
+      backToTop.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    })();
+
+    // ===== 手风琴展开/收起 =====
+    (function() {
+      document.querySelectorAll('.accordion-trigger').forEach(function(trigger) {
+        trigger.addEventListener('click', function() {
+          var targetId = this.getAttribute('data-target');
+          var content = document.getElementById(targetId);
+          if (!content) return;
+
+          var isOpen = content.classList.contains('open');
+          // 收起所有
+          document.querySelectorAll('.accordion-content').forEach(function(el) {
+            el.classList.remove('open');
+          });
+          document.querySelectorAll('.accordion-trigger .fa-chevron-down').forEach(function(icon) {
+            icon.style.transform = '';
+          });
+
+          if (!isOpen) {
+            content.classList.add('open');
+            var icon = this.querySelector('.fa-chevron-down');
+            if (icon) icon.style.transform = 'rotate(180deg)';
+            // 滚动到展开内容
+            setTimeout(function() {
+              content.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 100);
+          }
+        });
+      });
+    })();
+
+    // ===== 移动端导航 =====
+    (function() {
+      var menuBtn = document.getElementById('mobileMenuBtn');
+      var mobileNav = document.getElementById('mobileNav');
+      var closeBtn = document.getElementById('closeMobileNav');
+      var overlay = document.getElementById('mobileOverlay');
+
+      function openNav() {
+        mobileNav.classList.add('open');
+        overlay.classList.remove('hidden');
+      }
+      function closeNav() {
+        mobileNav.classList.remove('open');
+        overlay.classList.add('hidden');
+      }
+
+      menuBtn.addEventListener('click', openNav);
+      closeBtn.addEventListener('click', closeNav);
+      overlay.addEventListener('click', closeNav);
+
+      document.querySelectorAll('.mobile-nav-link').forEach(function(link) {
+        link.addEventListener('click', closeNav);
+      });
+    })();
+
+    // ===== 导航高亮 =====
+    (function() {
+      var sections = document.querySelectorAll('section[id]');
+      var navLinks = document.querySelectorAll('.nav-link');
+
+      window.addEventListener('scroll', function() {
+        var current = '';
+        sections.forEach(function(section) {
+          var sectionTop = section.offsetTop - 100;
+          if (window.scrollY >= sectionTop) {
+            current = section.getAttribute('id');
+          }
+        });
+
+        navLinks.forEach(function(link) {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === '#' + current) {
+            link.classList.add('active');
+          }
+        });
+      });
+    })();
+
+    // ===== 导航栏滚动效果 =====
+    (function() {
+      var navbar = document.getElementById('navbar');
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 10) {
+          navbar.classList.add('shadow-sm');
+        } else {
+          navbar.classList.remove('shadow-sm');
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
